@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use crate::container::HasId;
 use crate::round::RoundId;
 
-#[derive(Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct GroupId {
     pub bewerb_name: String,
     pub bewerb_id: u32,
@@ -23,6 +23,10 @@ impl Group {
         res.id.bewerb_id = id.bewerb_id;
         res.id.round_id = id.round_id;
         res
+    }
+
+    pub fn id(&self) -> &GroupId {
+        &self.id
     }
 }
 

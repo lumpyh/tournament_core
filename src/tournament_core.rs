@@ -66,6 +66,4 @@ impl Tournament {
         self.bewerbs.remove(id);
     }
 
-    // pub fn get_all_bewerbs_simple
-    // pub
 }

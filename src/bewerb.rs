@@ -1,8 +1,9 @@
 use crate::container::{HasId, UidContainer};
+use crate::group::GroupId;
 use crate::round::Round;
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct BewerbId {
     pub bewerb_name: String,
     pub bewerb_id: u32,
@@ -29,6 +30,16 @@ impl Bewerb {
             res.rounds.push(round);
         }
 
+        res
+    }
+
+    pub fn get_all_groups(&self) -> Vec<GroupId> {
+        let mut res = Vec::new();
+
+        for round in self.rounds.iter() {
+            let mut round_groups = round.get_all_groups();
+            res.append(&mut round_groups);
+        }
         res
     }
 }

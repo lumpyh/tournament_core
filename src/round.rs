@@ -1,7 +1,7 @@
 use crate::bewerb::BewerbId;
 use crate::container::HasId;
 use crate::container::UidContainer;
-use crate::group::Group;
+use crate::group::{Group, GroupId};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Default, Deserialize, Serialize)]
@@ -27,6 +27,10 @@ impl Round {
             res.groups.push(group);
         }
         res
+    }
+
+    pub fn get_all_groups(&self) -> Vec<GroupId> {
+        self.groups.iter().map(|x| (*x.id()).clone()).collect()
     }
 }
 
