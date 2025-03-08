@@ -1,0 +1,3 @@
+[submodule "proto"]
+	path = tournament_protos
+	url = git@github.com:lumpyh/tournament_protos.git

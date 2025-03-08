@@ -1,17 +1,17 @@
-use std::path::Path;
+use tournament_core::tournament_service::tournament::tournament_server::TournamentServer;
+use tournament_core::tournament_service::TournamentService;
 
-use tournament_core::Tournament;
+use tonic::transport::Server;
 
-fn main() {
-    let path = Path::new("conf.json");
-    let Ok(mut trounament) = Tournament::from_json_file(path) else {
-        println!("could not parse file");
-        return;
-    };
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let addr = "127.0.0.1:50051".parse()?;
+    let tourn = TournamentService::default();
 
-    println!("tournament: {:?}", trounament);
+    Server::builder()
+        .add_service(TournamentServer::new(tourn))
+        .serve(addr)
+        .await?;
 
-    trounament.name = "new_name".to_string();
-
-    trounament.to_json_file(path).unwrap();
+    Ok(())
 }
