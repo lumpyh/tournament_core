@@ -1,19 +1,29 @@
+use crate::bewerb::BewerbId;
 use crate::container::HasId;
 use crate::container::UidContainer;
 use crate::group::Group;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Default, Deserialize, Serialize)]
+pub struct RoundId {
+    pub bewerb_name: String,
+    pub bewerb_id: u32,
+    pub round_id: u32,
+}
+
+#[derive(Debug, Default, Deserialize, Serialize)]
 pub struct Round {
-    id: u32,
+    id: RoundId,
     groups: UidContainer<Group>,
 }
 
 impl Round {
-    pub fn new(n_groups: u32) -> Self {
+    pub fn new(bewerb_id: &BewerbId, n_groups: u32) -> Self {
         let mut res = Self::default();
+        res.id.bewerb_name = bewerb_id.bewerb_name.clone();
+        res.id.bewerb_id = bewerb_id.bewerb_id;
         for _i in 0..n_groups {
-            let group = Group::default();
+            let group = Group::new(&res.id);
             res.groups.push(group);
         }
         res
@@ -22,9 +32,9 @@ impl Round {
 
 impl HasId for Round {
     fn get_id(&self) -> u32 {
-        self.id
+        self.id.round_id
     }
     fn set_id(&mut self, id: u32) {
-        self.id = id;
+        self.id.round_id = id;
     }
 }
