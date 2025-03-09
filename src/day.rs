@@ -31,7 +31,7 @@ impl Day {
         res
     }
 
-    pub fn get_arena(&self, id: &ArenaSlotId) -> Option<&ArenaSlot> {
+    pub fn get_arena(&mut self, id: &ArenaSlotId) -> Option<&mut ArenaSlot> {
         let Some(ts) = self.timeslots.get(id.timeslot_id) else {
             return None;
         };

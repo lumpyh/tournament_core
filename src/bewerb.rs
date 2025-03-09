@@ -43,7 +43,7 @@ impl Bewerb {
         res
     }
 
-    pub fn get_group_by_id(&self, id: &GroupId) -> Option<&Group> {
+    pub fn get_group_by_id(&mut self, id: &GroupId) -> Option<&mut Group> {
         let Some(round) = self.rounds.get(id.round_id) else {
             return None;
         };

@@ -68,7 +68,7 @@ impl Tournament {
         self.bewerbs.remove(id);
     }
 
-    pub fn get_group_by_id(&self, id: &GroupId) -> Option<&Group> {
+    pub fn get_group_by_id(&mut self, id: &GroupId) -> Option<&mut Group> {
         let Some(bewerb) = self.bewerbs.get(id.bewerb_id) else {
             return None;
         };
@@ -76,11 +76,15 @@ impl Tournament {
         bewerb.get_group_by_id(id)
     }
 
-    pub fn get_arena_by_id(&self, id: &ArenaSlotId) -> Option<&ArenaSlot> {
+    pub fn get_arena_by_id(&mut self, id: &ArenaSlotId) -> Option<&mut ArenaSlot> {
         let Some(day) = self.days.get(id.day_id) else {
             return None;
         };
 
         day.get_arena(id)
+    }
+
+    pub fn add_group_to_arena(&mut self, group_id: &GroupId, arena_id: AreanSlotId) {
+
     }
 }

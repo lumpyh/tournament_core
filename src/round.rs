@@ -40,7 +40,7 @@ impl Round {
         }
     }
 
-    pub fn get_group_by_id(&self, id: &GroupId) -> Option<&Group> {
+    pub fn get_group_by_id(&mut self, id: &GroupId) -> Option<&mut Group> {
         self.groups.get(id.group_id)
     }
 }

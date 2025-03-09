@@ -33,7 +33,7 @@ impl Timeslot {
         }
     }
 
-    pub fn get_arena(&self, id: &ArenaSlotId) -> Option<&ArenaSlot> {
+    pub fn get_arena(&mut self, id: &ArenaSlotId) -> Option<&mut ArenaSlot> {
         self.arenas.get(id.arena_slot_id)
     }
 }
