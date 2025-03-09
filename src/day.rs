@@ -2,6 +2,7 @@ use chrono::{NaiveDate, NaiveDateTime};
 use prost_types::Timestamp;
 use serde::{Deserialize, Serialize};
 
+use crate::arena_slot::{ArenaSlot, ArenaSlotId};
 use crate::container::{HasId, UidContainer};
 use crate::timeslot::Timeslot;
 use crate::tournament_service::tournament::SimpleDay;
@@ -28,6 +29,14 @@ impl Day {
         }
 
         res
+    }
+
+    pub fn get_arena(&self, id: &ArenaSlotId) -> Option<&ArenaSlot> {
+        let Some(ts) = self.timeslots.get(id.timeslot_id) else {
+            return None;
+        };
+
+        ts.get_arena(id)
     }
 }
 

@@ -10,11 +10,12 @@ use crate::tournament_service::tournament::SimpleDay;
 
 use crate::container::UidContainer;
 use crate::group::{Group, GroupId};
+use crate::arena_slot::{ArenaSlot, ArenaSlotId};
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Tournament {
     pub name: String,
-    pub days: Vec<Day>,
+    pub days: UidContainer<Day>,
     pub bewerbs: UidContainer<Bewerb>,
 }
 
@@ -22,7 +23,7 @@ impl Tournament {
     pub fn new() -> Self {
         Tournament {
             name: "".to_string(),
-            days: Vec::new(),
+            days: UidContainer::default(),
             bewerbs: UidContainer::default(),
         }
     }
@@ -51,7 +52,7 @@ impl Tournament {
     }
 
     pub fn remove_day(&mut self, id: u32) {
-        self.days.retain(|e| e.id != id);
+        self.days.remove(id);
     }
 
     pub fn get_simple_days(&self) -> Vec<SimpleDay> {
@@ -73,5 +74,13 @@ impl Tournament {
         };
 
         bewerb.get_group_by_id(id)
+    }
+
+    pub fn get_arena_by_id(&self, id: &ArenaSlotId) -> Option<&ArenaSlot> {
+        let Some(day) = self.days.get(id.day_id) else {
+            return None;
+        };
+
+        day.get_arena(id)
     }
 }

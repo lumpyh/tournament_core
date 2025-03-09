@@ -1,4 +1,4 @@
-use crate::arena_slot::ArenaSlot;
+use crate::arena_slot::{ArenaSlot, ArenaSlotId};
 use crate::container::{HasId, UidContainer};
 use serde::{Deserialize, Serialize};
 
@@ -31,6 +31,10 @@ impl Timeslot {
         for arena in self.arenas.iter_mut() {
             arena.set_day_id(id);
         }
+    }
+
+    pub fn get_arena(&self, id: &ArenaSlotId) -> Option<&ArenaSlot> {
+        self.arenas.get(id.arena_slot_id)
     }
 }
 
