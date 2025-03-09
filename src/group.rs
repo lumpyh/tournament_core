@@ -1,6 +1,6 @@
-use serde::{Deserialize, Serialize};
 use crate::container::HasId;
 use crate::round::RoundId;
+use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct GroupId {

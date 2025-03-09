@@ -2,9 +2,9 @@ use chrono::{NaiveDate, NaiveDateTime};
 use prost_types::Timestamp;
 use serde::{Deserialize, Serialize};
 
-use crate::tournament_service::tournament::SimpleDay;
 use crate::container::{HasId, UidContainer};
 use crate::timeslot::Timeslot;
+use crate::tournament_service::tournament::SimpleDay;
 
 #[derive(Default, Debug, Deserialize, Serialize)]
 pub struct Day {

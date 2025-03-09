@@ -65,5 +65,4 @@ impl Tournament {
     pub fn remove_bewerb(&mut self, id: u32) {
         self.bewerbs.remove(id);
     }
-
 }

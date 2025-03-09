@@ -21,7 +21,7 @@ impl Bewerb {
             id: BewerbId {
                 bewerb_id: 0,
                 bewerb_name: name.clone(),
-                },
+            },
             rounds: UidContainer::default(),
         };
 

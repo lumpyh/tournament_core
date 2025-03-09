@@ -1,7 +1,7 @@
-use serde::{Deserialize, Serialize};
 use crate::container::HasId;
-use crate::timeslot::TimeslotId;
 use crate::group::GroupId;
+use crate::timeslot::TimeslotId;
+use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct ArenaSlotId {
@@ -33,7 +33,6 @@ impl ArenaSlot {
     }
 }
 
-
 impl HasId for ArenaSlot {
     fn get_id(&self) -> u32 {
         self.id.arena_slot_id
@@ -43,4 +42,3 @@ impl HasId for ArenaSlot {
         self.id.arena_slot_id = id;
     }
 }
-

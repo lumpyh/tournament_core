@@ -1,6 +1,6 @@
-use serde::{Deserialize, Serialize};
-use crate::container::{HasId, UidContainer};
 use crate::arena_slot::ArenaSlot;
+use crate::container::{HasId, UidContainer};
+use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct TimeslotId {
@@ -31,7 +31,6 @@ impl Timeslot {
         for arena in self.arenas.iter_mut() {
             arena.set_day_id(id);
         }
-
     }
 }
 

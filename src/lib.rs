@@ -7,6 +7,6 @@ mod bewerb;
 mod group;
 mod round;
 
+mod arena_slot;
 pub mod day;
 mod timeslot;
-mod arena_slot;
