@@ -28,6 +28,14 @@ impl Group {
     pub fn id(&self) -> &GroupId {
         &self.id
     }
+
+    pub fn set_bewerb_id(&mut self, id: u32) {
+        self.id.bewerb_id = id;
+    }
+
+    pub fn set_round_id(&mut self, id: u32) {
+        self.id.round_id = id;
+    }
 }
 
 impl HasId for Group {

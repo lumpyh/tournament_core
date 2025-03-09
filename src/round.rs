@@ -32,6 +32,13 @@ impl Round {
     pub fn get_all_groups(&self) -> Vec<GroupId> {
         self.groups.iter().map(|x| (*x.id()).clone()).collect()
     }
+
+    pub fn set_bewerb_id(&mut self, id: u32) {
+        self.id.bewerb_id = id;
+        for group in self.groups.iter_mut() {
+            group.set_bewerb_id(id);
+        }
+    }
 }
 
 impl HasId for Round {
@@ -40,5 +47,8 @@ impl HasId for Round {
     }
     fn set_id(&mut self, id: u32) {
         self.id.round_id = id;
+        for group in self.groups.iter_mut() {
+            group.set_round_id(id);
+        }
     }
 }

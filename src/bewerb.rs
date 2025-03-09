@@ -50,5 +50,8 @@ impl HasId for Bewerb {
     }
     fn set_id(&mut self, id: u32) {
         self.id.bewerb_id = id;
+        for round in self.rounds.iter_mut() {
+            round.set_bewerb_id(id);
+        }
     }
 }
