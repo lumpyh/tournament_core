@@ -30,9 +30,13 @@ impl<T: HasId> UidContainer<T> {
     pub fn remove(&mut self, id: u32) {
         self.vec.retain(|x| x.get_id() != id);
     }
+
+    pub fn get(&self, id: u32) -> Option<&T> {
+        self.iter().filter(|x| x.get_id() == id).next()
+    }
 }
 
-impl<T: HasId> UidContainer<T> {
+impl<T> UidContainer<T> {
     pub fn iter(&self) -> Iter<'_, T> {
         self.vec.iter()
     }

@@ -1,5 +1,5 @@
 use crate::container::{HasId, UidContainer};
-use crate::group::GroupId;
+use crate::group::{Group, GroupId};
 use crate::round::Round;
 use serde::{Deserialize, Serialize};
 
@@ -41,6 +41,14 @@ impl Bewerb {
             res.append(&mut round_groups);
         }
         res
+    }
+
+    pub fn get_group_by_id(&self, id: &GroupId) -> Option<&Group> {
+        let Some(round) = self.rounds.get(id.round_id) else {
+            return None;
+        };
+
+        round.get_group_by_id(id)
     }
 }
 

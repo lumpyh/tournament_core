@@ -9,6 +9,7 @@ use crate::error::Error;
 use crate::tournament_service::tournament::SimpleDay;
 
 use crate::container::UidContainer;
+use crate::group::{Group, GroupId};
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Tournament {
@@ -64,5 +65,13 @@ impl Tournament {
 
     pub fn remove_bewerb(&mut self, id: u32) {
         self.bewerbs.remove(id);
+    }
+
+    pub fn get_group_by_id(&self, id: &GroupId) -> Option<&Group> {
+        let Some(bewerb) = self.bewerbs.get(id.bewerb_id) else {
+            return None;
+        };
+
+        bewerb.get_group_by_id(id)
     }
 }

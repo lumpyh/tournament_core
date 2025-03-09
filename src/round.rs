@@ -39,6 +39,10 @@ impl Round {
             group.set_bewerb_id(id);
         }
     }
+
+    pub fn get_group_by_id(&self, id: &GroupId) -> Option<&Group> {
+        self.groups.get(id.group_id)
+    }
 }
 
 impl HasId for Round {
