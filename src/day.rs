@@ -18,10 +18,12 @@ pub struct Day {
 
 impl Day {
     pub fn new(date: NaiveDate, n_ts: u32, n_kp: u32) -> Self {
-        let mut res = Self::default();
-        res.date = date;
-        res.n_ts = n_ts;
-        res.n_kp = n_kp;
+        let mut res = Self {
+            date,
+            n_ts,
+            n_kp,
+            ..Default::default()
+        };
 
         for _i in 0..n_ts {
             let ts = Timeslot::new(res.id, n_kp);
@@ -32,9 +34,7 @@ impl Day {
     }
 
     pub fn get_arena(&mut self, id: &ArenaSlotId) -> Option<&mut ArenaSlot> {
-        let Some(ts) = self.timeslots.get(id.timeslot_id) else {
-            return None;
-        };
+        let ts = self.timeslots.get(id.timeslot_id)?;
 
         ts.get_arena(id)
     }

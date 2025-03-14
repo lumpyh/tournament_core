@@ -72,9 +72,7 @@ impl Tournament {
         bewerbs: &'a mut UidContainer<Bewerb>,
         id: &GroupId,
     ) -> Option<&'a mut Group> {
-        let Some(bewerb) = bewerbs.get(id.bewerb_id) else {
-            return None;
-        };
+        let bewerb = bewerbs.get(id.bewerb_id)?;
 
         bewerb.get_group_by_id(id)
     }
@@ -87,10 +85,7 @@ impl Tournament {
         days: &'a mut UidContainer<Day>,
         id: &ArenaSlotId,
     ) -> Option<&'a mut ArenaSlot> {
-        let Some(day) = days.get(id.day_id) else {
-            return None;
-        };
-
+        let day = days.get(id.day_id)?;
         day.get_arena(id)
     }
 
@@ -111,10 +106,7 @@ impl Tournament {
 
         match arena {
             Some(arena) => arena.set_group(None),
-            None => println!(
-                "{}",
-                format!("warning: curr arena {:?} not found", curr_arena_id)
-            ),
+            None => println!("warning: curr arena {:?} not found", curr_arena_id),
         }
         group.set_arena(None);
 
@@ -134,10 +126,7 @@ impl Tournament {
 
         match group {
             Some(group) => group.set_arena(None),
-            None => println!(
-                "{}",
-                format!("warning: curr group {:?} not found", curr_group_id)
-            ),
+            None => println!("warning: curr group {:?} not found", curr_group_id),
         }
         arena.set_group(None);
 

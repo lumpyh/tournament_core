@@ -32,7 +32,7 @@ impl<T: HasId> UidContainer<T> {
     }
 
     pub fn get(&mut self, id: u32) -> Option<&mut T> {
-        self.iter_mut().filter(|x| x.get_id() == id).next()
+        self.iter_mut().find(|x| x.get_id() == id)
     }
 }
 

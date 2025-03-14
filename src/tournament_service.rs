@@ -42,8 +42,8 @@ impl tournament_server::Tournament for TournamentService {
             }));
         };
 
-        let changeNameRequest = request.into_inner();
-        tournament.name = changeNameRequest.name;
+        let change_name_request = request.into_inner();
+        tournament.name = change_name_request.name;
 
         Ok(tonic::Response::new(ChangeNameResponse {
             success: true,
@@ -59,8 +59,7 @@ impl tournament_server::Tournament for TournamentService {
 
         let path_str = request.into_inner().path;
         let path = Path::new(&path_str);
-
-        let res = Tournament::from_json_file(&path);
+        let res = Tournament::from_json_file(path);
 
         let response = match res {
             Ok(tourn) => {
@@ -94,8 +93,7 @@ impl tournament_server::Tournament for TournamentService {
 
         let path_str = request.into_inner().path;
         let path = Path::new(&path_str);
-
-        let res = tournament.to_json_file(&path);
+        let res = tournament.to_json_file(path);
 
         let response = match res {
             Ok(_) => SaveResponse {
