@@ -2,6 +2,7 @@ use std::io;
 
 #[derive(Debug)]
 pub enum Error {
+    InvalidInput(String),
     Io(io::Error),
     SerdeJson(serde_json::Error),
 }

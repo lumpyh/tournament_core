@@ -8,9 +8,9 @@ use crate::error::Error;
 
 use crate::tournament_service::tournament::SimpleDay;
 
+use crate::arena_slot::{ArenaSlot, ArenaSlotId};
 use crate::container::UidContainer;
 use crate::group::{Group, GroupId};
-use crate::arena_slot::{ArenaSlot, ArenaSlotId};
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Tournament {
@@ -68,23 +68,101 @@ impl Tournament {
         self.bewerbs.remove(id);
     }
 
-    pub fn get_group_by_id(&mut self, id: &GroupId) -> Option<&mut Group> {
-        let Some(bewerb) = self.bewerbs.get(id.bewerb_id) else {
+    fn get_group_by_id_internal<'a>(
+        bewerbs: &'a mut UidContainer<Bewerb>,
+        id: &GroupId,
+    ) -> Option<&'a mut Group> {
+        let Some(bewerb) = bewerbs.get(id.bewerb_id) else {
             return None;
         };
 
         bewerb.get_group_by_id(id)
     }
 
-    pub fn get_arena_by_id(&mut self, id: &ArenaSlotId) -> Option<&mut ArenaSlot> {
-        let Some(day) = self.days.get(id.day_id) else {
+    pub fn get_group_by_id(&mut self, id: &GroupId) -> Option<&mut Group> {
+        Self::get_group_by_id_internal(&mut self.bewerbs, id)
+    }
+
+    fn get_arena_by_id_internal<'a>(
+        days: &'a mut UidContainer<Day>,
+        id: &ArenaSlotId,
+    ) -> Option<&'a mut ArenaSlot> {
+        let Some(day) = days.get(id.day_id) else {
             return None;
         };
 
         day.get_arena(id)
     }
 
-    pub fn add_group_to_arena(&mut self, group_id: &GroupId, arena_id: AreanSlotId) {
+    pub fn get_arena_by_id(&mut self, id: &ArenaSlotId) -> Option<&mut ArenaSlot> {
+        Self::get_arena_by_id_internal(&mut self.days, id)
+    }
 
+    fn freeup_group(&mut self, id: &GroupId) -> Result<(), Error> {
+        let Some(group) = Self::get_group_by_id_internal(&mut self.bewerbs, id) else {
+            return Err(Error::InvalidInput(format!("Ivalid group_id {:?}", id)));
+        };
+
+        let Some(curr_arena_id) = group.get_arena() else {
+            return Ok(());
+        };
+
+        let arena = Self::get_arena_by_id_internal(&mut self.days, curr_arena_id);
+
+        match arena {
+            Some(arena) => arena.set_group(None),
+            None => println!(
+                "{}",
+                format!("warning: curr arena {:?} not found", curr_arena_id)
+            ),
+        }
+        group.set_arena(None);
+
+        Ok(())
+    }
+
+    fn freeup_arena(&mut self, id: &ArenaSlotId) -> Result<(), Error> {
+        let Some(arena) = Self::get_arena_by_id_internal(&mut self.days, id) else {
+            return Err(Error::InvalidInput(format!("Ivalid arena_id {:?}", id)));
+        };
+
+        let Some(curr_group_id) = arena.get_group() else {
+            return Ok(());
+        };
+
+        let group = Self::get_group_by_id_internal(&mut self.bewerbs, curr_group_id);
+
+        match group {
+            Some(group) => group.set_arena(None),
+            None => println!(
+                "{}",
+                format!("warning: curr group {:?} not found", curr_group_id)
+            ),
+        }
+        arena.set_group(None);
+
+        Ok(())
+    }
+
+    pub fn add_group_to_arena(
+        &mut self,
+        group_id: &GroupId,
+        arena_id: &ArenaSlotId,
+    ) -> Result<(), Error> {
+        self.freeup_arena(arena_id)?;
+        self.freeup_group(group_id)?;
+
+        let Some(arena) = Self::get_arena_by_id_internal(&mut self.days, arena_id) else {
+            return Err(Error::InvalidInput("Ivalid arena_id".to_string()));
+        };
+
+        let Some(group) = Self::get_group_by_id_internal(&mut self.bewerbs, group_id) else {
+            return Err(Error::InvalidInput("Ivalid group_id".to_string()));
+        };
+
+        arena.set_group(Some(group_id.clone()));
+        group.set_arena(Some(arena_id.clone()));
+
+        Ok(())
     }
 }

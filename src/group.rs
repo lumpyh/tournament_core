@@ -44,8 +44,8 @@ impl Group {
         &self.arena_slot
     }
 
-    pub fn set_arena(&mut self, id: ArenaSlotId) {
-        self.arena_slot = Some(id);
+    pub fn set_arena(&mut self, id: Option<ArenaSlotId>) {
+        self.arena_slot = id;
     }
 }
 

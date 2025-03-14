@@ -31,6 +31,14 @@ impl ArenaSlot {
     pub fn set_day_id(&mut self, id: u32) {
         self.id.day_id = id;
     }
+
+    pub fn get_group(&self) -> Option<&GroupId> {
+        self.group.as_ref()
+    }
+
+    pub fn set_group(&mut self, id: Option<GroupId>) {
+        self.group = id;
+    }
 }
 
 impl HasId for ArenaSlot {
