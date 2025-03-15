@@ -25,6 +25,17 @@ impl From<&GroupId> for GroupIdentifier {
     }
 }
 
+impl From<GroupIdentifier> for GroupId {
+    fn from(id: GroupIdentifier) -> Self {
+        Self {
+            bewerb_name: id.name.to_owned(),
+            bewerb_id: id.bewerb_id,
+            round_id: id.round_id,
+            group_id: id.group_id,
+        }
+    }
+}
+
 #[derive(Debug, Default, Deserialize, Serialize)]
 pub struct Group {
     id: GroupId,

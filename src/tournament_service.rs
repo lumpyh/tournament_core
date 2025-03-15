@@ -1,9 +1,9 @@
 use crate::tournament::{
     tournament_server, AddBewerbRequest, AddBewerbResponse, AddDayRequest, AddDayResponse,
-    ChangeNameRequest, ChangeNameResponse, GetAllFreeGroupsRequest, GetAllFreeGroupsResponse,
-    GetDayDataRequest, GetDayDataResponse, GetSimpleDaysRequest, GetSimpleDaysResponse,
-    LoadRequest, LoadResponse, RemoveBewerbRequest, RemoveBewerbResponse, RemoveDayRequest,
-    RemoveDayResponse, SaveRequest, SaveResponse,
+    AddGroupToArenaRequest, AddGroupToArenaResponse, ChangeNameRequest, ChangeNameResponse,
+    GetAllFreeGroupsRequest, GetAllFreeGroupsResponse, GetDayDataRequest, GetDayDataResponse,
+    GetSimpleDaysRequest, GetSimpleDaysResponse, LoadRequest, LoadResponse, RemoveBewerbRequest,
+    RemoveBewerbResponse, RemoveDayRequest, RemoveDayResponse, SaveRequest, SaveResponse,
 };
 
 use crate::tournament_core::Tournament;
@@ -237,5 +237,37 @@ impl tournament_server::Tournament for TournamentService {
             .collect();
 
         Ok(tonic::Response::new(GetAllFreeGroupsResponse { groups }))
+    }
+
+    async fn add_group_to_arena(
+        &self,
+        request: tonic::Request<AddGroupToArenaRequest>,
+    ) -> std::result::Result<tonic::Response<AddGroupToArenaResponse>, tonic::Status> {
+        let mut tourn_mut = self.tournament.lock().await;
+        let Some(ref mut tournament) = *tourn_mut else {
+            return Err(tonic::Status::new(
+                tonic::Code::Internal,
+                "not loaded jet".to_string(),
+            ));
+        };
+
+        let req = request.into_inner();
+        let Some(group_id) = req.group_id else {
+            return Err(tonic::Status::new(
+                tonic::Code::InvalidArgument,
+                "group_id not set".to_string(),
+            ));
+        };
+
+        let Some(arena_id) = req.arena_id else {
+            return Err(tonic::Status::new(
+                tonic::Code::InvalidArgument,
+                "arena_id not set".to_string(),
+            ));
+        };
+
+        tournament.add_group_to_arena(&group_id.into(), &arena_id.into())?;
+
+        Ok(tonic::Response::new(AddGroupToArenaResponse {}))
     }
 }

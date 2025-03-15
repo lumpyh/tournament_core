@@ -22,6 +22,16 @@ impl From<&ArenaSlotId> for ArenaIdentifier {
     }
 }
 
+impl From<ArenaIdentifier> for ArenaSlotId {
+    fn from(id: ArenaIdentifier) -> Self {
+        Self {
+            day_id: id.day_id,
+            timeslot_id: id.timeslot_id,
+            arena_slot_id: id.arena_id,
+        }
+    }
+}
+
 #[derive(Debug, Default, Deserialize, Serialize)]
 pub struct ArenaSlot {
     id: ArenaSlotId,
