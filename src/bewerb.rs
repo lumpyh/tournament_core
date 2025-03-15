@@ -43,6 +43,16 @@ impl Bewerb {
         res
     }
 
+    pub fn get_free_groups(&self) -> Vec<GroupId> {
+        let mut res = Vec::new();
+
+        for round in self.rounds.iter() {
+            let mut round_groups = round.get_free_groups();
+            res.append(&mut round_groups);
+        }
+        res
+    }
+
     pub fn get_group_by_id(&mut self, id: &GroupId) -> Option<&mut Group> {
         let round = self.rounds.get_mut(id.round_id)?;
         round.get_group_by_id(id)

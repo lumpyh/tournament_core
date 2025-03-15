@@ -33,6 +33,14 @@ impl Round {
         self.groups.iter().map(|x| (*x.id()).clone()).collect()
     }
 
+    pub fn get_free_groups(&self) -> Vec<GroupId> {
+        self.groups
+            .iter()
+            .filter(|x| x.get_arena().is_none())
+            .map(|x| (*x.id()).clone())
+            .collect()
+    }
+
     pub fn set_bewerb_id(&mut self, id: u32) {
         self.id.bewerb_id = id;
         for group in self.groups.iter_mut() {

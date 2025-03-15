@@ -77,6 +77,16 @@ impl Tournament {
         self.bewerbs.remove(id);
     }
 
+    pub fn get_all_free_groups(&self) -> Vec<GroupId> {
+        let mut res = Vec::new();
+
+        for bewerb in self.bewerbs.iter() {
+            let mut round_groups = bewerb.get_free_groups();
+            res.append(&mut round_groups);
+        }
+        res
+    }
+
     fn get_group_by_id_internal<'a>(
         bewerbs: &'a mut UidContainer<Bewerb>,
         id: &GroupId,
