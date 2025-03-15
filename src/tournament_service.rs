@@ -1,7 +1,8 @@
 use crate::tournament::{
-    tournament_server, AddDayRequest, AddDayResponse, ChangeNameRequest, ChangeNameResponse,
-    GetDayDataRequest, GetDayDataResponse, GetSimpleDaysRequest, GetSimpleDaysResponse,
-    LoadRequest, LoadResponse, RemoveDayRequest, RemoveDayResponse, SaveRequest, SaveResponse,
+    tournament_server, AddBewerbRequest, AddBewerbResponse, AddDayRequest, AddDayResponse,
+    ChangeNameRequest, ChangeNameResponse, GetDayDataRequest, GetDayDataResponse,
+    GetSimpleDaysRequest, GetSimpleDaysResponse, LoadRequest, LoadResponse, RemoveBewerbRequest,
+    RemoveBewerbResponse, RemoveDayRequest, RemoveDayResponse, SaveRequest, SaveResponse,
 };
 
 use crate::tournament_core::Tournament;
@@ -178,5 +179,41 @@ impl tournament_server::Tournament for TournamentService {
         let day = tournament.get_day_data(id)?;
 
         Ok(tonic::Response::new(GetDayDataResponse { day: Some(day) }))
+    }
+
+    async fn add_bewerb(
+        &self,
+        request: tonic::Request<AddBewerbRequest>,
+    ) -> std::result::Result<tonic::Response<AddBewerbResponse>, tonic::Status> {
+        let mut tourn_mut = self.tournament.lock().await;
+        let Some(ref mut tournament) = *tourn_mut else {
+            return Err(tonic::Status::new(
+                tonic::Code::Internal,
+                "not loaded jet".to_string(),
+            ));
+        };
+
+        let req = request.into_inner();
+        tournament.add_bewerb(req.name, req.n_groups, req.n_rounds);
+
+        Ok(tonic::Response::new(AddBewerbResponse {}))
+    }
+
+    async fn remove_bewerb(
+        &self,
+        request: tonic::Request<RemoveBewerbRequest>,
+    ) -> std::result::Result<tonic::Response<RemoveBewerbResponse>, tonic::Status> {
+        let mut tourn_mut = self.tournament.lock().await;
+        let Some(ref mut tournament) = *tourn_mut else {
+            return Err(tonic::Status::new(
+                tonic::Code::Internal,
+                "not loaded jet".to_string(),
+            ));
+        };
+
+        let req = request.into_inner();
+        tournament.remove_bewerb(req.bewerb_id);
+
+        Ok(tonic::Response::new(RemoveBewerbResponse {}))
     }
 }
