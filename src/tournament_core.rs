@@ -65,6 +65,15 @@ impl Tournament {
     }
 
     pub fn remove_bewerb(&mut self, id: u32) {
+        let Some(bewerb) = self.bewerbs.get(id) else {
+            return;
+        };
+
+        let groups = bewerb.get_all_groups();
+        for group in groups {
+            let _ = self.freeup_group(&group);
+        }
+
         self.bewerbs.remove(id);
     }
 
