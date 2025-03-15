@@ -72,17 +72,17 @@ impl From<SimpleDay> for Day {
     }
 }
 
-impl Into<SimpleDay> for &Day {
-    fn into(self) -> SimpleDay {
+impl From<&Day> for SimpleDay {
+    fn from(val: &Day) -> Self {
         let date = Some(Timestamp {
-            seconds: NaiveDateTime::from(self.date).timestamp(),
+            seconds: NaiveDateTime::from(val.date).timestamp(),
             nanos: 0,
         });
         SimpleDay {
-            id: self.id,
+            id: val.id,
             date,
-            number_time_slots: self.n_ts,
-            number_arenas: self.n_kp,
+            number_time_slots: val.n_ts,
+            number_arenas: val.n_kp,
         }
     }
 }
