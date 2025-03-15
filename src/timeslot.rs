@@ -1,5 +1,6 @@
 use crate::arena_slot::{ArenaSlot, ArenaSlotId};
 use crate::container::{HasId, UidContainer};
+use crate::tournament;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -34,7 +35,15 @@ impl Timeslot {
     }
 
     pub fn get_arena(&mut self, id: &ArenaSlotId) -> Option<&mut ArenaSlot> {
-        self.arenas.get(id.arena_slot_id)
+        self.arenas.get_mut(id.arena_slot_id)
+    }
+}
+
+impl From<&Timeslot> for tournament::TimeslotData {
+    fn from(ts: &Timeslot) -> Self {
+        let arenas = ts.arenas.iter().map(|x| x.into()).collect();
+
+        Self { arenas }
     }
 }
 

@@ -31,7 +31,11 @@ impl<T: HasId> UidContainer<T> {
         self.vec.retain(|x| x.get_id() != id);
     }
 
-    pub fn get(&mut self, id: u32) -> Option<&mut T> {
+    pub fn get(&self, id: u32) -> Option<&T> {
+        self.iter().find(|x| x.get_id() == id)
+    }
+
+    pub fn get_mut(&mut self, id: u32) -> Option<&mut T> {
         self.iter_mut().find(|x| x.get_id() == id)
     }
 }

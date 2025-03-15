@@ -1,7 +1,7 @@
-use tournament::{
+use crate::tournament::{
     tournament_server, AddDayRequest, AddDayResponse, ChangeNameRequest, ChangeNameResponse,
-    GetSimpleDaysRequest, GetSimpleDaysResponse, LoadRequest, LoadResponse, RemoveDayRequest,
-    RemoveDayResponse, SaveRequest, SaveResponse,
+    GetDayDataRequest, GetDayDataResponse, GetSimpleDaysRequest, GetSimpleDaysResponse,
+    LoadRequest, LoadResponse, RemoveDayRequest, RemoveDayResponse, SaveRequest, SaveResponse,
 };
 
 use crate::tournament_core::Tournament;
@@ -9,10 +9,6 @@ use crate::tournament_core::Tournament;
 use std::path::Path;
 use std::sync::Arc;
 use tokio::sync::Mutex;
-
-pub mod tournament {
-    tonic::include_proto!("tournament");
-}
 
 #[derive(Debug)]
 pub struct TournamentService {
@@ -164,5 +160,23 @@ impl tournament_server::Tournament for TournamentService {
         let days = tournament.get_simple_days();
 
         Ok(tonic::Response::new(GetSimpleDaysResponse { days }))
+    }
+
+    async fn get_day_data(
+        &self,
+        request: tonic::Request<GetDayDataRequest>,
+    ) -> std::result::Result<tonic::Response<GetDayDataResponse>, tonic::Status> {
+        let mut tourn_mut = self.tournament.lock().await;
+        let Some(ref mut tournament) = *tourn_mut else {
+            return Err(tonic::Status::new(
+                tonic::Code::Internal,
+                "not loaded jet".to_string(),
+            ));
+        };
+
+        let id = request.into_inner().id;
+        let day = tournament.get_day_data(id)?;
+
+        Ok(tonic::Response::new(GetDayDataResponse { day: Some(day) }))
     }
 }

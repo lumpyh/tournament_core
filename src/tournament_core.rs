@@ -6,7 +6,7 @@ use crate::bewerb::Bewerb;
 use crate::day::Day;
 use crate::error::Error;
 
-use crate::tournament_service::tournament::SimpleDay;
+use crate::tournament::{DayData, SimpleDay};
 
 use crate::arena_slot::{ArenaSlot, ArenaSlotId};
 use crate::container::UidContainer;
@@ -72,7 +72,7 @@ impl Tournament {
         bewerbs: &'a mut UidContainer<Bewerb>,
         id: &GroupId,
     ) -> Option<&'a mut Group> {
-        let bewerb = bewerbs.get(id.bewerb_id)?;
+        let bewerb = bewerbs.get_mut(id.bewerb_id)?;
 
         bewerb.get_group_by_id(id)
     }
@@ -85,7 +85,7 @@ impl Tournament {
         days: &'a mut UidContainer<Day>,
         id: &ArenaSlotId,
     ) -> Option<&'a mut ArenaSlot> {
-        let day = days.get(id.day_id)?;
+        let day = days.get_mut(id.day_id)?;
         day.get_arena(id)
     }
 
@@ -153,5 +153,13 @@ impl Tournament {
         group.set_arena(Some(arena_id.clone()));
 
         Ok(())
+    }
+
+    pub fn get_day_data(&self, id: u32) -> Result<DayData, Error> {
+        let Some(day) = self.days.get(id) else {
+            return Err(Error::InvalidInput(format!("Ivalid arena_id {:?}", id)));
+        };
+
+        Ok(day.into())
     }
 }

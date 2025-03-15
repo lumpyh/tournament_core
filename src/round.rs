@@ -41,7 +41,7 @@ impl Round {
     }
 
     pub fn get_group_by_id(&mut self, id: &GroupId) -> Option<&mut Group> {
-        self.groups.get(id.group_id)
+        self.groups.get_mut(id.group_id)
     }
 }
 

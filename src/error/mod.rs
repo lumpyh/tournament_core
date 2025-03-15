@@ -18,3 +18,12 @@ impl From<serde_json::Error> for Error {
         Error::SerdeJson(err)
     }
 }
+
+impl From<Error> for tonic::Status {
+    fn from(err: Error) -> Self {
+        if let Error::InvalidInput(err) = err {
+            return Self::new(tonic::Code::InvalidArgument, err);
+        }
+        Self::new(tonic::Code::Internal, format!("{:?}", err))
+    }
+}

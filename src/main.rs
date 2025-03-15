@@ -1,4 +1,4 @@
-use tournament_core::tournament_service::tournament::tournament_server::TournamentServer;
+use tournament_core::tournament::tournament_server::TournamentServer;
 use tournament_core::tournament_service::TournamentService;
 
 use tonic::transport::Server;

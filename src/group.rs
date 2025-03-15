@@ -4,12 +4,25 @@ use serde::{Deserialize, Serialize};
 
 use crate::arena_slot::ArenaSlotId;
 
+use crate::tournament::GroupIdentifier;
+
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub struct GroupId {
     pub bewerb_name: String,
     pub bewerb_id: u32,
     pub round_id: u32,
     pub group_id: u32,
+}
+
+impl From<&GroupId> for GroupIdentifier {
+    fn from(id: &GroupId) -> Self {
+        Self {
+            name: id.bewerb_name.to_owned(),
+            bewerb_id: id.bewerb_id,
+            round_id: id.round_id,
+            group_id: id.group_id,
+        }
+    }
 }
 
 #[derive(Debug, Default, Deserialize, Serialize)]

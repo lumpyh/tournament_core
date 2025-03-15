@@ -10,3 +10,7 @@ mod round;
 mod arena_slot;
 pub mod day;
 mod timeslot;
+
+pub mod tournament {
+    tonic::include_proto!("tournament");
+}

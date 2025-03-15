@@ -44,7 +44,7 @@ impl Bewerb {
     }
 
     pub fn get_group_by_id(&mut self, id: &GroupId) -> Option<&mut Group> {
-        let round = self.rounds.get(id.round_id)?;
+        let round = self.rounds.get_mut(id.round_id)?;
         round.get_group_by_id(id)
     }
 }

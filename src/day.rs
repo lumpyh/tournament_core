@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 use crate::arena_slot::{ArenaSlot, ArenaSlotId};
 use crate::container::{HasId, UidContainer};
 use crate::timeslot::Timeslot;
-use crate::tournament_service::tournament::SimpleDay;
+use crate::tournament::{DayData, SimpleDay};
 
 #[derive(Default, Debug, Deserialize, Serialize)]
 pub struct Day {
@@ -34,9 +34,17 @@ impl Day {
     }
 
     pub fn get_arena(&mut self, id: &ArenaSlotId) -> Option<&mut ArenaSlot> {
-        let ts = self.timeslots.get(id.timeslot_id)?;
+        let ts = self.timeslots.get_mut(id.timeslot_id)?;
 
         ts.get_arena(id)
+    }
+}
+
+impl From<&Day> for DayData {
+    fn from(day: &Day) -> Self {
+        let timeslots = day.timeslots.iter().map(|x| x.into()).collect();
+
+        Self { timeslots }
     }
 }
 
