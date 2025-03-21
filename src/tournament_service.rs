@@ -1,10 +1,10 @@
 use crate::tournament::{
     tournament_server, AddBewerbRequest, AddBewerbResponse, AddDayRequest, AddDayResponse,
     AddGroupToArenaRequest, AddGroupToArenaResponse, ChangeNameRequest, ChangeNameResponse,
-    GetAllFreeGroupsRequest, GetAllFreeGroupsResponse, GetDayDataRequest, GetDayDataResponse,
-    GetSimpleBewerbsRequest, GetSimpleBewerbsResponse, GetSimpleDaysRequest, GetSimpleDaysResponse,
-    LoadRequest, LoadResponse, RemoveBewerbRequest, RemoveBewerbResponse, RemoveDayRequest,
-    RemoveDayResponse, SaveRequest, SaveResponse,
+    FreeUpGroupRequest, FreeUpGroupResponse, GetAllFreeGroupsRequest, GetAllFreeGroupsResponse,
+    GetDayDataRequest, GetDayDataResponse, GetSimpleBewerbsRequest, GetSimpleBewerbsResponse,
+    GetSimpleDaysRequest, GetSimpleDaysResponse, LoadRequest, LoadResponse, RemoveBewerbRequest,
+    RemoveBewerbResponse, RemoveDayRequest, RemoveDayResponse, SaveRequest, SaveResponse,
 };
 
 use crate::tournament_core::Tournament;
@@ -196,7 +196,7 @@ impl tournament_server::Tournament for TournamentService {
         };
 
         let req = request.into_inner();
-        tournament.add_bewerb(req.name, req.n_groups, req.n_rounds);
+        tournament.add_bewerb(req.name, req.n_rounds, req.n_groups);
 
         Ok(tonic::Response::new(AddBewerbResponse {}))
     }
@@ -231,9 +231,13 @@ impl tournament_server::Tournament for TournamentService {
             ));
         };
 
-        let data = tournament.get_bewerbs().iter().map(|x| (*x).into()).collect();
+        let data = tournament
+            .get_bewerbs()
+            .iter()
+            .map(|x| (*x).into())
+            .collect();
 
-        Ok(tonic::Response::new(GetSimpleBewerbsResponse {data}))
+        Ok(tonic::Response::new(GetSimpleBewerbsResponse { data }))
     }
 
     async fn get_all_free_groups(
@@ -287,5 +291,29 @@ impl tournament_server::Tournament for TournamentService {
         tournament.add_group_to_arena(&group_id.into(), &arena_id.into())?;
 
         Ok(tonic::Response::new(AddGroupToArenaResponse {}))
+    }
+
+    async fn free_up_group(
+        &self,
+        request: tonic::Request<FreeUpGroupRequest>,
+    ) -> std::result::Result<tonic::Response<FreeUpGroupResponse>, tonic::Status> {
+        let mut tourn_mut = self.tournament.lock().await;
+        let Some(ref mut tournament) = *tourn_mut else {
+            return Err(tonic::Status::new(
+                tonic::Code::Internal,
+                "not loaded jet".to_string(),
+            ));
+        };
+
+        let Some(group_id) = request.into_inner().group_id else {
+            return Err(tonic::Status::new(
+                tonic::Code::InvalidArgument,
+                "group_id not set".to_string(),
+            ));
+        };
+
+        tournament.freeup_group(&group_id.into())?;
+
+        Ok(tonic::Response::new(FreeUpGroupResponse {}))
     }
 }

@@ -59,8 +59,8 @@ impl Tournament {
         self.days.iter().map(|e| e.into()).collect()
     }
 
-    pub fn add_bewerb(&mut self, name: String, n_groups: u32, n_rounds: u32) {
-        let bewerb = Bewerb::new(name, n_groups, n_rounds);
+    pub fn add_bewerb(&mut self, name: String, n_rounds: u32, n_groups: u32) {
+        let bewerb = Bewerb::new(name, n_rounds, n_groups);
         self.bewerbs.push(bewerb);
     }
 
@@ -116,7 +116,7 @@ impl Tournament {
         Self::get_arena_by_id_internal(&mut self.days, id)
     }
 
-    fn freeup_group(&mut self, id: &GroupId) -> Result<(), Error> {
+    pub fn freeup_group(&mut self, id: &GroupId) -> Result<(), Error> {
         let Some(group) = Self::get_group_by_id_internal(&mut self.bewerbs, id) else {
             return Err(Error::InvalidInput(format!("Ivalid group_id {:?}", id)));
         };
