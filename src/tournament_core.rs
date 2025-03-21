@@ -77,6 +77,10 @@ impl Tournament {
         self.bewerbs.remove(id);
     }
 
+    pub fn get_bewerbs(&self) -> Vec<&Bewerb> {
+        self.bewerbs.iter().collect()
+    }
+
     pub fn get_all_free_groups(&self) -> Vec<GroupId> {
         let mut res = Vec::new();
 

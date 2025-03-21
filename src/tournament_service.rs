@@ -2,8 +2,9 @@ use crate::tournament::{
     tournament_server, AddBewerbRequest, AddBewerbResponse, AddDayRequest, AddDayResponse,
     AddGroupToArenaRequest, AddGroupToArenaResponse, ChangeNameRequest, ChangeNameResponse,
     GetAllFreeGroupsRequest, GetAllFreeGroupsResponse, GetDayDataRequest, GetDayDataResponse,
-    GetSimpleDaysRequest, GetSimpleDaysResponse, LoadRequest, LoadResponse, RemoveBewerbRequest,
-    RemoveBewerbResponse, RemoveDayRequest, RemoveDayResponse, SaveRequest, SaveResponse,
+    GetSimpleBewerbsRequest, GetSimpleBewerbsResponse, GetSimpleDaysRequest, GetSimpleDaysResponse,
+    LoadRequest, LoadResponse, RemoveBewerbRequest, RemoveBewerbResponse, RemoveDayRequest,
+    RemoveDayResponse, SaveRequest, SaveResponse,
 };
 
 use crate::tournament_core::Tournament;
@@ -149,7 +150,7 @@ impl tournament_server::Tournament for TournamentService {
 
     async fn get_simple_days(
         &self,
-        request: tonic::Request<GetSimpleDaysRequest>,
+        _request: tonic::Request<GetSimpleDaysRequest>,
     ) -> std::result::Result<tonic::Response<GetSimpleDaysResponse>, tonic::Status> {
         let mut tourn_mut = self.tournament.lock().await;
         let Some(ref mut tournament) = *tourn_mut else {
@@ -216,6 +217,23 @@ impl tournament_server::Tournament for TournamentService {
         tournament.remove_bewerb(req.bewerb_id);
 
         Ok(tonic::Response::new(RemoveBewerbResponse {}))
+    }
+
+    async fn get_simple_bewerbs(
+        &self,
+        _request: tonic::Request<GetSimpleBewerbsRequest>,
+    ) -> std::result::Result<tonic::Response<GetSimpleBewerbsResponse>, tonic::Status> {
+        let mut tourn_mut = self.tournament.lock().await;
+        let Some(ref mut tournament) = *tourn_mut else {
+            return Err(tonic::Status::new(
+                tonic::Code::Internal,
+                "not loaded jet".to_string(),
+            ));
+        };
+
+        let data = tournament.get_bewerbs().iter().map(|x| (*x).into()).collect();
+
+        Ok(tonic::Response::new(GetSimpleBewerbsResponse {data}))
     }
 
     async fn get_all_free_groups(

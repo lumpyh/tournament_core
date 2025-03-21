@@ -3,6 +3,8 @@ use crate::group::{Group, GroupId};
 use crate::round::Round;
 use serde::{Deserialize, Serialize};
 
+use crate::tournament::SimpleBewerbData;
+
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct BewerbId {
     pub bewerb_name: String,
@@ -12,6 +14,8 @@ pub struct BewerbId {
 #[derive(Debug, Default, Deserialize, Serialize)]
 pub struct Bewerb {
     id: BewerbId,
+    n_rounds: u32,
+    n_groups: u32,
     rounds: UidContainer<Round>,
 }
 
@@ -22,6 +26,8 @@ impl Bewerb {
                 bewerb_id: 0,
                 bewerb_name: name.clone(),
             },
+            n_rounds,
+            n_groups,
             rounds: UidContainer::default(),
         };
 
@@ -56,6 +62,17 @@ impl Bewerb {
     pub fn get_group_by_id(&mut self, id: &GroupId) -> Option<&mut Group> {
         let round = self.rounds.get_mut(id.round_id)?;
         round.get_group_by_id(id)
+    }
+}
+
+impl From<&Bewerb> for SimpleBewerbData {
+    fn from(bewerb: &Bewerb) -> Self {
+        Self {
+            id: bewerb.id.bewerb_id,
+            name: bewerb.id.bewerb_name.to_owned(),
+            n_rounds: bewerb.n_rounds,
+            n_groups: bewerb.n_groups,
+        }
     }
 }
 
