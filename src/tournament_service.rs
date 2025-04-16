@@ -7,6 +7,7 @@ use crate::tournament::{
     RemoveBewerbResponse, RemoveDayRequest, RemoveDayResponse, SaveRequest, SaveResponse,
 };
 
+
 use crate::tournament_core::Tournament;
 
 use std::path::Path;
@@ -18,10 +19,10 @@ pub struct TournamentService {
     tournament: Arc<Mutex<Option<Tournament>>>,
 }
 
-impl Default for TournamentService {
-    fn default() -> Self {
-        TournamentService {
-            tournament: Arc::new(Mutex::new(Some(Tournament::new()))),
+impl TournamentService {
+    pub fn new(tournament: Arc<Mutex<Option<Tournament>>>) -> Self {
+        Self {
+            tournament,
         }
     }
 }

@@ -3,12 +3,30 @@ use crate::group::{Group, GroupId};
 use crate::round::Round;
 use serde::{Deserialize, Serialize};
 
-use crate::tournament::SimpleBewerbData;
+use crate::tournament::{BewerbIdentifier, SimpleBewerbData};
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct BewerbId {
     pub bewerb_name: String,
     pub bewerb_id: u32,
+}
+
+impl From<&BewerbIdentifier> for BewerbId {
+    fn from(id: &BewerbIdentifier) -> Self{
+        Self {
+            bewerb_name: id.name.clone(),
+            bewerb_id: id.id,
+        }
+    }
+}
+
+impl From<&BewerbId> for BewerbIdentifier {
+    fn from(id: &BewerbId) -> Self {
+        Self {
+            id: id.bewerb_id, 
+            name: id.bewerb_name.to_owned(),
+        }
+    }
 }
 
 #[derive(Debug, Default, Deserialize, Serialize)]

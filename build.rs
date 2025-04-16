@@ -6,7 +6,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     tonic_build::configure()
         .file_descriptor_set_path(out_dir.join("tournament_descriptor.bin"))
         .compile_protos(
-            &["tournament_protos/tournament.proto"],
+            &[
+                "tournament_protos/tournament.proto",
+                "tournament_protos/messages.proto",
+                "tournament_protos/fencer_messages.proto",
+            ],
             &["tournament_protos"],
         )?;
     Ok(())

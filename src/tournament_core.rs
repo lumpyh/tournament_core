@@ -6,26 +6,24 @@ use crate::bewerb::Bewerb;
 use crate::day::Day;
 use crate::error::Error;
 
-use crate::tournament::{DayData, SimpleDay};
+use crate::tournament::{DayData, SimpleDay, SimpleFencer};
 
 use crate::arena_slot::{ArenaSlot, ArenaSlotId};
 use crate::container::UidContainer;
+use crate::fencer::Fencer;
 use crate::group::{Group, GroupId};
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Default, Deserialize, Serialize)]
 pub struct Tournament {
     pub name: String,
     pub days: UidContainer<Day>,
     pub bewerbs: UidContainer<Bewerb>,
+    pub fencers: UidContainer<Fencer>,
 }
 
 impl Tournament {
     pub fn new() -> Self {
-        Tournament {
-            name: "".to_string(),
-            days: UidContainer::default(),
-            bewerbs: UidContainer::default(),
-        }
+        Tournament::default()
     }
 
     pub fn from_json_file(path: &Path) -> Result<Tournament, Error> {
@@ -184,5 +182,17 @@ impl Tournament {
         };
 
         Ok(day.into())
+    }
+
+    // pub fn add_fencers(&mut self, new_fencers: Vec<NewFencer>) -> Result<(), Error> {
+    //     for new_fencer in new_fencers.iter() {
+    //         let fencer = new_fencer.into();
+    //         self.fencers.push(fencer);
+    //     }
+    //     Ok(())
+    // }
+
+    pub fn get_all_fencers(&mut self) -> Result<Vec<SimpleFencer>,Error> {
+        Ok(self.fencers.iter().map(|x| x.into()).collect())
     }
 }

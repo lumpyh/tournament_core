@@ -1,3 +1,904 @@
 {
-  "name": "new_name"
+  "name": "",
+  "days": {
+    "vec": [
+      {
+        "id": 0,
+        "date": "2025-03-07",
+        "n_ts": 7,
+        "n_kp": 4,
+        "timeslots": {
+          "vec": [
+            {
+              "id": {
+                "day_id": 0,
+                "timeslot_id": 0
+              },
+              "arenas": {
+                "vec": [
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 0,
+                      "arena_slot_id": 0
+                    },
+                    "group": {
+                      "bewerb_name": "Schwert Offen",
+                      "bewerb_id": 0,
+                      "round_id": 0,
+                      "group_id": 0
+                    }
+                  },
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 0,
+                      "arena_slot_id": 1
+                    },
+                    "group": {
+                      "bewerb_name": "Schwert Offen",
+                      "bewerb_id": 0,
+                      "round_id": 0,
+                      "group_id": 1
+                    }
+                  },
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 0,
+                      "arena_slot_id": 2
+                    },
+                    "group": {
+                      "bewerb_name": "Schwert Offen",
+                      "bewerb_id": 0,
+                      "round_id": 0,
+                      "group_id": 2
+                    }
+                  },
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 0,
+                      "arena_slot_id": 3
+                    },
+                    "group": {
+                      "bewerb_name": "Schwert Offen",
+                      "bewerb_id": 0,
+                      "round_id": 0,
+                      "group_id": 3
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "id": {
+                "day_id": 0,
+                "timeslot_id": 1
+              },
+              "arenas": {
+                "vec": [
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 1,
+                      "arena_slot_id": 0
+                    },
+                    "group": {
+                      "bewerb_name": "Schwert Offen",
+                      "bewerb_id": 0,
+                      "round_id": 0,
+                      "group_id": 4
+                    }
+                  },
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 1,
+                      "arena_slot_id": 1
+                    },
+                    "group": {
+                      "bewerb_name": "Schwert Damen",
+                      "bewerb_id": 1,
+                      "round_id": 0,
+                      "group_id": 0
+                    }
+                  },
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 1,
+                      "arena_slot_id": 2
+                    },
+                    "group": {
+                      "bewerb_name": "Schwert Damen",
+                      "bewerb_id": 1,
+                      "round_id": 0,
+                      "group_id": 1
+                    }
+                  },
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 1,
+                      "arena_slot_id": 3
+                    },
+                    "group": null
+                  }
+                ]
+              }
+            },
+            {
+              "id": {
+                "day_id": 0,
+                "timeslot_id": 2
+              },
+              "arenas": {
+                "vec": [
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 2,
+                      "arena_slot_id": 0
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 2,
+                      "arena_slot_id": 1
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 2,
+                      "arena_slot_id": 2
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 2,
+                      "arena_slot_id": 3
+                    },
+                    "group": null
+                  }
+                ]
+              }
+            },
+            {
+              "id": {
+                "day_id": 0,
+                "timeslot_id": 3
+              },
+              "arenas": {
+                "vec": [
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 3,
+                      "arena_slot_id": 0
+                    },
+                    "group": {
+                      "bewerb_name": "Schwert Offen",
+                      "bewerb_id": 0,
+                      "round_id": 1,
+                      "group_id": 0
+                    }
+                  },
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 3,
+                      "arena_slot_id": 1
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 3,
+                      "arena_slot_id": 2
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 3,
+                      "arena_slot_id": 3
+                    },
+                    "group": null
+                  }
+                ]
+              }
+            },
+            {
+              "id": {
+                "day_id": 0,
+                "timeslot_id": 4
+              },
+              "arenas": {
+                "vec": [
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 4,
+                      "arena_slot_id": 0
+                    },
+                    "group": {
+                      "bewerb_name": "Schwert Offen",
+                      "bewerb_id": 0,
+                      "round_id": 1,
+                      "group_id": 1
+                    }
+                  },
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 4,
+                      "arena_slot_id": 1
+                    },
+                    "group": {
+                      "bewerb_name": "Schwert Offen",
+                      "bewerb_id": 0,
+                      "round_id": 1,
+                      "group_id": 2
+                    }
+                  },
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 4,
+                      "arena_slot_id": 2
+                    },
+                    "group": {
+                      "bewerb_name": "Schwert Offen",
+                      "bewerb_id": 0,
+                      "round_id": 1,
+                      "group_id": 3
+                    }
+                  },
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 4,
+                      "arena_slot_id": 3
+                    },
+                    "group": {
+                      "bewerb_name": "Schwert Offen",
+                      "bewerb_id": 0,
+                      "round_id": 1,
+                      "group_id": 4
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "id": {
+                "day_id": 0,
+                "timeslot_id": 5
+              },
+              "arenas": {
+                "vec": [
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 5,
+                      "arena_slot_id": 0
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 5,
+                      "arena_slot_id": 1
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 5,
+                      "arena_slot_id": 2
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 5,
+                      "arena_slot_id": 3
+                    },
+                    "group": null
+                  }
+                ]
+              }
+            },
+            {
+              "id": {
+                "day_id": 0,
+                "timeslot_id": 6
+              },
+              "arenas": {
+                "vec": [
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 6,
+                      "arena_slot_id": 0
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 6,
+                      "arena_slot_id": 1
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 6,
+                      "arena_slot_id": 2
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 6,
+                      "arena_slot_id": 3
+                    },
+                    "group": null
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": 1,
+        "date": "2025-03-08",
+        "n_ts": 7,
+        "n_kp": 4,
+        "timeslots": {
+          "vec": [
+            {
+              "id": {
+                "day_id": 1,
+                "timeslot_id": 0
+              },
+              "arenas": {
+                "vec": [
+                  {
+                    "id": {
+                      "day_id": 1,
+                      "timeslot_id": 0,
+                      "arena_slot_id": 0
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 1,
+                      "timeslot_id": 0,
+                      "arena_slot_id": 1
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 1,
+                      "timeslot_id": 0,
+                      "arena_slot_id": 2
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 1,
+                      "timeslot_id": 0,
+                      "arena_slot_id": 3
+                    },
+                    "group": null
+                  }
+                ]
+              }
+            },
+            {
+              "id": {
+                "day_id": 1,
+                "timeslot_id": 1
+              },
+              "arenas": {
+                "vec": [
+                  {
+                    "id": {
+                      "day_id": 1,
+                      "timeslot_id": 1,
+                      "arena_slot_id": 0
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 1,
+                      "timeslot_id": 1,
+                      "arena_slot_id": 1
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 1,
+                      "timeslot_id": 1,
+                      "arena_slot_id": 2
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 1,
+                      "timeslot_id": 1,
+                      "arena_slot_id": 3
+                    },
+                    "group": null
+                  }
+                ]
+              }
+            },
+            {
+              "id": {
+                "day_id": 1,
+                "timeslot_id": 2
+              },
+              "arenas": {
+                "vec": [
+                  {
+                    "id": {
+                      "day_id": 1,
+                      "timeslot_id": 2,
+                      "arena_slot_id": 0
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 1,
+                      "timeslot_id": 2,
+                      "arena_slot_id": 1
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 1,
+                      "timeslot_id": 2,
+                      "arena_slot_id": 2
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 1,
+                      "timeslot_id": 2,
+                      "arena_slot_id": 3
+                    },
+                    "group": null
+                  }
+                ]
+              }
+            },
+            {
+              "id": {
+                "day_id": 1,
+                "timeslot_id": 3
+              },
+              "arenas": {
+                "vec": [
+                  {
+                    "id": {
+                      "day_id": 1,
+                      "timeslot_id": 3,
+                      "arena_slot_id": 0
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 1,
+                      "timeslot_id": 3,
+                      "arena_slot_id": 1
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 1,
+                      "timeslot_id": 3,
+                      "arena_slot_id": 2
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 1,
+                      "timeslot_id": 3,
+                      "arena_slot_id": 3
+                    },
+                    "group": null
+                  }
+                ]
+              }
+            },
+            {
+              "id": {
+                "day_id": 1,
+                "timeslot_id": 4
+              },
+              "arenas": {
+                "vec": [
+                  {
+                    "id": {
+                      "day_id": 1,
+                      "timeslot_id": 4,
+                      "arena_slot_id": 0
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 1,
+                      "timeslot_id": 4,
+                      "arena_slot_id": 1
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 1,
+                      "timeslot_id": 4,
+                      "arena_slot_id": 2
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 1,
+                      "timeslot_id": 4,
+                      "arena_slot_id": 3
+                    },
+                    "group": null
+                  }
+                ]
+              }
+            },
+            {
+              "id": {
+                "day_id": 1,
+                "timeslot_id": 5
+              },
+              "arenas": {
+                "vec": [
+                  {
+                    "id": {
+                      "day_id": 1,
+                      "timeslot_id": 5,
+                      "arena_slot_id": 0
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 1,
+                      "timeslot_id": 5,
+                      "arena_slot_id": 1
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 1,
+                      "timeslot_id": 5,
+                      "arena_slot_id": 2
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 1,
+                      "timeslot_id": 5,
+                      "arena_slot_id": 3
+                    },
+                    "group": null
+                  }
+                ]
+              }
+            },
+            {
+              "id": {
+                "day_id": 1,
+                "timeslot_id": 6
+              },
+              "arenas": {
+                "vec": [
+                  {
+                    "id": {
+                      "day_id": 1,
+                      "timeslot_id": 6,
+                      "arena_slot_id": 0
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 1,
+                      "timeslot_id": 6,
+                      "arena_slot_id": 1
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 1,
+                      "timeslot_id": 6,
+                      "arena_slot_id": 2
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 1,
+                      "timeslot_id": 6,
+                      "arena_slot_id": 3
+                    },
+                    "group": null
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "bewerbs": {
+    "vec": [
+      {
+        "id": {
+          "bewerb_name": "Schwert Offen",
+          "bewerb_id": 0
+        },
+        "n_rounds": 2,
+        "n_groups": 5,
+        "rounds": {
+          "vec": [
+            {
+              "id": {
+                "bewerb_name": "Schwert Offen",
+                "bewerb_id": 0,
+                "round_id": 0
+              },
+              "groups": {
+                "vec": [
+                  {
+                    "id": {
+                      "bewerb_name": "Schwert Offen",
+                      "bewerb_id": 0,
+                      "round_id": 0,
+                      "group_id": 0
+                    },
+                    "arena_slot": {
+                      "day_id": 0,
+                      "timeslot_id": 0,
+                      "arena_slot_id": 0
+                    },
+                    "fencers": []
+                  },
+                  {
+                    "id": {
+                      "bewerb_name": "Schwert Offen",
+                      "bewerb_id": 0,
+                      "round_id": 0,
+                      "group_id": 1
+                    },
+                    "arena_slot": {
+                      "day_id": 0,
+                      "timeslot_id": 0,
+                      "arena_slot_id": 1
+                    },
+                    "fencers": []
+                  },
+                  {
+                    "id": {
+                      "bewerb_name": "Schwert Offen",
+                      "bewerb_id": 0,
+                      "round_id": 0,
+                      "group_id": 2
+                    },
+                    "arena_slot": {
+                      "day_id": 0,
+                      "timeslot_id": 0,
+                      "arena_slot_id": 2
+                    },
+                    "fencers": []
+                  },
+                  {
+                    "id": {
+                      "bewerb_name": "Schwert Offen",
+                      "bewerb_id": 0,
+                      "round_id": 0,
+                      "group_id": 3
+                    },
+                    "arena_slot": {
+                      "day_id": 0,
+                      "timeslot_id": 0,
+                      "arena_slot_id": 3
+                    },
+                    "fencers": []
+                  },
+                  {
+                    "id": {
+                      "bewerb_name": "Schwert Offen",
+                      "bewerb_id": 0,
+                      "round_id": 0,
+                      "group_id": 4
+                    },
+                    "arena_slot": {
+                      "day_id": 0,
+                      "timeslot_id": 1,
+                      "arena_slot_id": 0
+                    },
+                    "fencers": []
+                  }
+                ]
+              }
+            },
+            {
+              "id": {
+                "bewerb_name": "Schwert Offen",
+                "bewerb_id": 0,
+                "round_id": 1
+              },
+              "groups": {
+                "vec": [
+                  {
+                    "id": {
+                      "bewerb_name": "Schwert Offen",
+                      "bewerb_id": 0,
+                      "round_id": 1,
+                      "group_id": 0
+                    },
+                    "arena_slot": {
+                      "day_id": 0,
+                      "timeslot_id": 3,
+                      "arena_slot_id": 0
+                    },
+                    "fencers": []
+                  },
+                  {
+                    "id": {
+                      "bewerb_name": "Schwert Offen",
+                      "bewerb_id": 0,
+                      "round_id": 1,
+                      "group_id": 1
+                    },
+                    "arena_slot": {
+                      "day_id": 0,
+                      "timeslot_id": 4,
+                      "arena_slot_id": 0
+                    },
+                    "fencers": []
+                  },
+                  {
+                    "id": {
+                      "bewerb_name": "Schwert Offen",
+                      "bewerb_id": 0,
+                      "round_id": 1,
+                      "group_id": 2
+                    },
+                    "arena_slot": {
+                      "day_id": 0,
+                      "timeslot_id": 4,
+                      "arena_slot_id": 1
+                    },
+                    "fencers": []
+                  },
+                  {
+                    "id": {
+                      "bewerb_name": "Schwert Offen",
+                      "bewerb_id": 0,
+                      "round_id": 1,
+                      "group_id": 3
+                    },
+                    "arena_slot": {
+                      "day_id": 0,
+                      "timeslot_id": 4,
+                      "arena_slot_id": 2
+                    },
+                    "fencers": []
+                  },
+                  {
+                    "id": {
+                      "bewerb_name": "Schwert Offen",
+                      "bewerb_id": 0,
+                      "round_id": 1,
+                      "group_id": 4
+                    },
+                    "arena_slot": {
+                      "day_id": 0,
+                      "timeslot_id": 4,
+                      "arena_slot_id": 3
+                    },
+                    "fencers": []
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": {
+          "bewerb_name": "Schwert Damen",
+          "bewerb_id": 1
+        },
+        "n_rounds": 1,
+        "n_groups": 2,
+        "rounds": {
+          "vec": [
+            {
+              "id": {
+                "bewerb_name": "Schwert Damen",
+                "bewerb_id": 1,
+                "round_id": 0
+              },
+              "groups": {
+                "vec": [
+                  {
+                    "id": {
+                      "bewerb_name": "Schwert Damen",
+                      "bewerb_id": 1,
+                      "round_id": 0,
+                      "group_id": 0
+                    },
+                    "arena_slot": {
+                      "day_id": 0,
+                      "timeslot_id": 1,
+                      "arena_slot_id": 1
+                    },
+                    "fencers": []
+                  },
+                  {
+                    "id": {
+                      "bewerb_name": "Schwert Damen",
+                      "bewerb_id": 1,
+                      "round_id": 0,
+                      "group_id": 1
+                    },
+                    "arena_slot": {
+                      "day_id": 0,
+                      "timeslot_id": 1,
+                      "arena_slot_id": 2
+                    },
+                    "fencers": []
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
 }
