@@ -76,7 +76,7 @@ impl From<&Fencer> for SimpleFencer {
 }
 
 impl Fencer {
-    pub fn new(name: String, bewerbs: &[BewerbId]) -> Self {
+    pub fn new(name: String, bewerbs: Vec<BewerbId>) -> Self {
         Self {
             id: 0,
             name: Mutex::new(name),

@@ -1,4 +1,4 @@
-use crate::arena_slot::{ArenaSlot, ArenaSlotId};
+use crate::arena_slot::{ArenaSlot, ArenaSlotId, ArenaSlotSaveable};
 use crate::container::{HasId, UidContainer};
 use crate::tournament;
 use serde::{Deserialize, Serialize};
@@ -15,7 +15,36 @@ pub struct Timeslot {
     arenas: UidContainer<ArenaSlot>,
 }
 
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+pub struct TimeslotSaveable {
+    id: TimeslotId,
+    arenas: Vec<ArenaSlotSaveable>,
+}
+
+impl From<&Timeslot> for TimeslotSaveable {
+    fn from(ts: &Timeslot) -> Self {
+        let arenas = ts.arenas.iter().map(|x| x.into()).collect();
+
+        Self {
+            id: ts.id.clone(),
+            arenas,
+        }
+    }
+}
+
 impl Timeslot {
+    pub fn from_timeslot_saveable(ts_saveables: TimeslotSaveable) -> Self {
+        let mut arenas: UidContainer<ArenaSlot> = Default::default();
+        for ts_saveable in ts_saveables.arenas.iter() {
+            arenas.insert(ArenaSlot::from_arena_slot_saveable(ts_saveable.clone()));
+        }
+
+        Self {
+            id: ts_saveables.id,
+            arenas,
+        }
+    }
+
     pub fn new(day_id: u32, n_kp: u32) -> Self {
         let mut res = Self::default();
         res.id.day_id = day_id;

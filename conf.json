@@ -1,269 +1,5 @@
 {
   "name": "",
-  "days": {
-    "vec": [
-      {
-        "id": 0,
-        "date": "1970-01-01",
-        "n_ts": 5,
-        "n_kp": 5,
-        "timeslots": {
-          "vec": [
-            {
-              "id": {
-                "day_id": 0,
-                "timeslot_id": 0
-              },
-              "arenas": {
-                "vec": [
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 0,
-                      "arena_slot_id": 0
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 0,
-                      "arena_slot_id": 1
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 0,
-                      "arena_slot_id": 2
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 0,
-                      "arena_slot_id": 3
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 0,
-                      "arena_slot_id": 4
-                    },
-                    "group": null
-                  }
-                ]
-              }
-            },
-            {
-              "id": {
-                "day_id": 0,
-                "timeslot_id": 1
-              },
-              "arenas": {
-                "vec": [
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 1,
-                      "arena_slot_id": 0
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 1,
-                      "arena_slot_id": 1
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 1,
-                      "arena_slot_id": 2
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 1,
-                      "arena_slot_id": 3
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 1,
-                      "arena_slot_id": 4
-                    },
-                    "group": null
-                  }
-                ]
-              }
-            },
-            {
-              "id": {
-                "day_id": 0,
-                "timeslot_id": 2
-              },
-              "arenas": {
-                "vec": [
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 2,
-                      "arena_slot_id": 0
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 2,
-                      "arena_slot_id": 1
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 2,
-                      "arena_slot_id": 2
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 2,
-                      "arena_slot_id": 3
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 2,
-                      "arena_slot_id": 4
-                    },
-                    "group": null
-                  }
-                ]
-              }
-            },
-            {
-              "id": {
-                "day_id": 0,
-                "timeslot_id": 3
-              },
-              "arenas": {
-                "vec": [
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 3,
-                      "arena_slot_id": 0
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 3,
-                      "arena_slot_id": 1
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 3,
-                      "arena_slot_id": 2
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 3,
-                      "arena_slot_id": 3
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 3,
-                      "arena_slot_id": 4
-                    },
-                    "group": null
-                  }
-                ]
-              }
-            },
-            {
-              "id": {
-                "day_id": 0,
-                "timeslot_id": 4
-              },
-              "arenas": {
-                "vec": [
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 4,
-                      "arena_slot_id": 0
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 4,
-                      "arena_slot_id": 1
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 4,
-                      "arena_slot_id": 2
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 4,
-                      "arena_slot_id": 3
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 4,
-                      "arena_slot_id": 4
-                    },
-                    "group": null
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      }
-    ]
-  },
   "bewerbs": {
     "vec": [
       {
@@ -290,7 +26,11 @@
                       "round_id": 0,
                       "group_id": 0
                     },
-                    "arena_slot": null,
+                    "arena_slot": {
+                      "day_id": 0,
+                      "timeslot_id": 0,
+                      "arena_slot_id": 0
+                    },
                     "fencers": []
                   },
                   {
@@ -300,7 +40,11 @@
                       "round_id": 0,
                       "group_id": 1
                     },
-                    "arena_slot": null,
+                    "arena_slot": {
+                      "day_id": 0,
+                      "timeslot_id": 0,
+                      "arena_slot_id": 1
+                    },
                     "fencers": []
                   },
                   {
@@ -310,7 +54,11 @@
                       "round_id": 0,
                       "group_id": 2
                     },
-                    "arena_slot": null,
+                    "arena_slot": {
+                      "day_id": 0,
+                      "timeslot_id": 0,
+                      "arena_slot_id": 2
+                    },
                     "fencers": []
                   },
                   {
@@ -320,7 +68,11 @@
                       "round_id": 0,
                       "group_id": 3
                     },
-                    "arena_slot": null,
+                    "arena_slot": {
+                      "day_id": 0,
+                      "timeslot_id": 1,
+                      "arena_slot_id": 0
+                    },
                     "fencers": []
                   },
                   {
@@ -330,7 +82,11 @@
                       "round_id": 0,
                       "group_id": 4
                     },
-                    "arena_slot": null,
+                    "arena_slot": {
+                      "day_id": 0,
+                      "timeslot_id": 1,
+                      "arena_slot_id": 1
+                    },
                     "fencers": []
                   }
                 ]
@@ -351,7 +107,11 @@
                       "round_id": 1,
                       "group_id": 0
                     },
-                    "arena_slot": null,
+                    "arena_slot": {
+                      "day_id": 0,
+                      "timeslot_id": 1,
+                      "arena_slot_id": 2
+                    },
                     "fencers": []
                   },
                   {
@@ -361,7 +121,11 @@
                       "round_id": 1,
                       "group_id": 1
                     },
-                    "arena_slot": null,
+                    "arena_slot": {
+                      "day_id": 0,
+                      "timeslot_id": 2,
+                      "arena_slot_id": 0
+                    },
                     "fencers": []
                   },
                   {
@@ -371,7 +135,11 @@
                       "round_id": 1,
                       "group_id": 2
                     },
-                    "arena_slot": null,
+                    "arena_slot": {
+                      "day_id": 0,
+                      "timeslot_id": 2,
+                      "arena_slot_id": 1
+                    },
                     "fencers": []
                   },
                   {
@@ -381,7 +149,11 @@
                       "round_id": 1,
                       "group_id": 3
                     },
-                    "arena_slot": null,
+                    "arena_slot": {
+                      "day_id": 0,
+                      "timeslot_id": 2,
+                      "arena_slot_id": 2
+                    },
                     "fencers": []
                   },
                   {
@@ -391,7 +163,11 @@
                       "round_id": 1,
                       "group_id": 4
                     },
-                    "arena_slot": null,
+                    "arena_slot": {
+                      "day_id": 0,
+                      "timeslot_id": 3,
+                      "arena_slot_id": 0
+                    },
                     "fencers": []
                   }
                 ]
@@ -424,7 +200,11 @@
                       "round_id": 0,
                       "group_id": 0
                     },
-                    "arena_slot": null,
+                    "arena_slot": {
+                      "day_id": 0,
+                      "timeslot_id": 3,
+                      "arena_slot_id": 1
+                    },
                     "fencers": []
                   },
                   {
@@ -434,7 +214,11 @@
                       "round_id": 0,
                       "group_id": 1
                     },
-                    "arena_slot": null,
+                    "arena_slot": {
+                      "day_id": 0,
+                      "timeslot_id": 3,
+                      "arena_slot_id": 2
+                    },
                     "fencers": []
                   }
                 ]

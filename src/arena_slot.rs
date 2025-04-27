@@ -38,7 +38,29 @@ pub struct ArenaSlot {
     group: Option<GroupId>,
 }
 
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+pub struct ArenaSlotSaveable {
+    id: ArenaSlotId,
+    group: Option<GroupId>,
+}
+
+impl From<&ArenaSlot> for ArenaSlotSaveable {
+    fn from(arena_slot: &ArenaSlot) -> Self {
+        Self {
+            id: arena_slot.id.clone(),
+            group: arena_slot.group.clone(),
+        }
+    }
+}
+
 impl ArenaSlot {
+    pub fn from_arena_slot_saveable(as_save_able: ArenaSlotSaveable) -> Self {
+        Self {
+            id: as_save_able.id,
+            group: as_save_able.group,
+        }
+    }
+
     pub fn new(ts: TimeslotId) -> Self {
         let mut res = Self::default();
         res.id.day_id = ts.day_id;

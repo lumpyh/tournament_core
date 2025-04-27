@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::arena_slot::{ArenaSlot, ArenaSlotId};
 use crate::container::{HasId, UidContainer};
-use crate::timeslot::Timeslot;
+use crate::timeslot::{Timeslot, TimeslotSaveable};
 use crate::tournament::{DayData, SimpleDay};
 
 #[derive(Default, Debug, Deserialize, Serialize)]
@@ -16,7 +16,45 @@ pub struct Day {
     timeslots: UidContainer<Timeslot>,
 }
 
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
+pub struct DaySaveable {
+    pub id: u32,
+    date: NaiveDate,
+    n_ts: u32,
+    n_kp: u32,
+    timeslots: Vec<TimeslotSaveable>,
+}
+
+impl From<&Day> for DaySaveable {
+    fn from(day: &Day) -> Self {
+        let timeslots = day.timeslots.iter().map(|x| x.into()).collect();
+
+        Self {
+            id: day.id,
+            date: day.date,
+            n_ts: day.n_ts,
+            n_kp: day.n_kp,
+            timeslots,
+        }
+    }
+}
+
 impl Day {
+    pub fn from_saveable(day: DaySaveable) -> Self {
+        let mut timeslots: UidContainer<Timeslot> = Default::default();
+        for ts in day.timeslots.iter() {
+            timeslots.insert(Timeslot::from_timeslot_saveable(ts.clone()));
+        }
+
+        Self {
+            id: day.id,
+            date: day.date,
+            n_ts: day.n_ts,
+            n_kp: day.n_kp,
+            timeslots,
+        }
+    }
+
     pub fn new(date: NaiveDate, n_ts: u32, n_kp: u32) -> Self {
         let mut res = Self {
             date,
@@ -29,7 +67,6 @@ impl Day {
             let ts = Timeslot::new(res.id, n_kp);
             res.timeslots.push(ts);
         }
-
         res
     }
 

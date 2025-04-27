@@ -3,7 +3,7 @@ use std::fs::File;
 use std::path::Path;
 
 use crate::bewerb::Bewerb;
-use crate::day::Day;
+use crate::day::{Day, DaySaveable};
 use crate::error::Error;
 
 use crate::tournament::{DayData, SimpleDay, SimpleFencer};
@@ -16,13 +16,13 @@ use crate::group::{Group, GroupId};
 #[derive(Debug, Default, Deserialize, Serialize)]
 pub struct TournamentInternal {
     pub name: String,
-    pub days: UidContainer<Day>,
     pub bewerbs: UidContainer<Bewerb>,
 }
 
 #[derive(Debug, Default)]
 pub struct Tournament {
     pub inner: TournamentInternal,
+    pub days: UidContainer<Day>,
     pub fencers: Fencers,
 }
 
@@ -31,12 +31,36 @@ impl Tournament {
         Tournament::default()
     }
 
+    pub fn days_to_json_file(&self) -> Result<(), Error> {
+        let days: Vec<DaySaveable> = self.days.iter().map(|x| x.into()).collect();
+        let file = File::create("days.json")?;
+        serde_json::to_writer_pretty(file, &days)?;
+        Ok(())
+    }
+
+    pub fn load_days_from_json_file() -> Result<UidContainer<Day>, Error> {
+        let file = File::open("days.json")?;
+        let days: Vec<DaySaveable> = serde_json::from_reader(file)?;
+
+        let mut res: UidContainer<Day> = Default::default();
+        for day in days {
+            res.insert(Day::from_saveable(day.clone()));
+        }
+
+        Ok(res)
+    }
+
     pub fn from_json_file(path: &Path) -> Result<Tournament, Error> {
         let file = File::open(path)?;
         let inner = serde_json::from_reader(file)?;
         let fencers = Fencers::from_json_file().unwrap_or_default();
+        let days = Self::load_days_from_json_file().unwrap_or_default();
 
-        Ok(Tournament { inner, fencers })
+        Ok(Tournament {
+            inner,
+            fencers,
+            days,
+        })
     }
 
     pub fn to_json_file(&self, path: &Path) -> Result<(), Error> {
@@ -45,26 +69,30 @@ impl Tournament {
         if let Err(err) = self.fencers.save_to_file() {
             println!("error while saving fencers {:?}", err);
         }
+        if let Err(err) = self.days_to_json_file() {
+            println!("error while saving fencers {:?}", err);
+        }
+
         Ok(())
     }
 
     pub fn add_day(&mut self, mut day: Day) {
         let mut id = 0;
-        let ids: Vec<u32> = self.inner.days.iter().map(|x| x.id).collect();
+        let ids: Vec<u32> = self.days.iter().map(|x| x.id).collect();
         while ids.contains(&id) {
             id += 1;
         }
         day.id = id;
 
-        self.inner.days.push(day);
+        self.days.push(day);
     }
 
     pub fn remove_day(&mut self, id: u32) {
-        self.inner.days.remove(id);
+        self.days.remove(id);
     }
 
     pub fn get_simple_days(&self) -> Vec<SimpleDay> {
-        self.inner.days.iter().map(|e| e.into()).collect()
+        self.days.iter().map(|e| e.into()).collect()
     }
 
     pub fn add_bewerb(&mut self, name: String, n_rounds: u32, n_groups: u32) {
@@ -121,7 +149,7 @@ impl Tournament {
     }
 
     pub fn get_arena_by_id(&mut self, id: &ArenaSlotId) -> Option<&mut ArenaSlot> {
-        Self::get_arena_by_id_internal(&mut self.inner.days, id)
+        Self::get_arena_by_id_internal(&mut self.days, id)
     }
 
     pub fn freeup_group(&mut self, id: &GroupId) -> Result<(), Error> {
@@ -133,7 +161,7 @@ impl Tournament {
             return Ok(());
         };
 
-        let arena = Self::get_arena_by_id_internal(&mut self.inner.days, curr_arena_id);
+        let arena = Self::get_arena_by_id_internal(&mut self.days, curr_arena_id);
 
         match arena {
             Some(arena) => arena.set_group(None),
@@ -145,7 +173,7 @@ impl Tournament {
     }
 
     fn freeup_arena(&mut self, id: &ArenaSlotId) -> Result<(), Error> {
-        let Some(arena) = Self::get_arena_by_id_internal(&mut self.inner.days, id) else {
+        let Some(arena) = Self::get_arena_by_id_internal(&mut self.days, id) else {
             return Err(Error::InvalidInput(format!("Ivalid arena_id {:?}", id)));
         };
 
@@ -172,7 +200,7 @@ impl Tournament {
         self.freeup_arena(arena_id)?;
         self.freeup_group(group_id)?;
 
-        let Some(arena) = Self::get_arena_by_id_internal(&mut self.inner.days, arena_id) else {
+        let Some(arena) = Self::get_arena_by_id_internal(&mut self.days, arena_id) else {
             return Err(Error::InvalidInput("Ivalid arena_id".to_string()));
         };
 
@@ -187,7 +215,7 @@ impl Tournament {
     }
 
     pub fn get_day_data(&self, id: u32) -> Result<DayData, Error> {
-        let Some(day) = self.inner.days.get(id) else {
+        let Some(day) = self.days.get(id) else {
             return Err(Error::InvalidInput(format!("Ivalid arena_id {:?}", id)));
         };
 
@@ -205,7 +233,7 @@ impl Tournament {
             } else {
                 let new_fencer = Fencer::new(
                     fencer.name.to_owned(),
-                    &fencer.bewerbs.iter().map(|x| x.into()).collect(),
+                    fencer.bewerbs.iter().map(|x| x.into()).collect(),
                 );
                 self.fencers.push(new_fencer);
             }

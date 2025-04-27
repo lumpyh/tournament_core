@@ -12,6 +12,10 @@ pub struct UidContainer<T> {
 }
 
 impl<T: HasId> UidContainer<T> {
+    pub fn insert(&mut self, t: T) {
+        self.vec.push(t);
+    }
+
     fn get_new_id(&self) -> u32 {
         let mut id = 0;
         let ids: Vec<u32> = self.vec.iter().map(|x| x.get_id()).collect();
