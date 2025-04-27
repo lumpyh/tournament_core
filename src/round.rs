@@ -1,8 +1,8 @@
 use crate::bewerb::BewerbId;
 use crate::container::HasId;
-use crate::container::UidContainer;
 use crate::group::{Group, GroupId, GroupSaveable};
 use serde::{Deserialize, Serialize};
+use std::sync::Arc;
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct RoundId {
@@ -11,10 +11,10 @@ pub struct RoundId {
     pub round_id: u32,
 }
 
-#[derive(Debug, Default, Deserialize, Serialize)]
+#[derive(Debug, Default)]
 pub struct Round {
     id: RoundId,
-    groups: UidContainer<Group>,
+    groups: Vec<Arc<Group>>,
 }
 
 #[derive(Debug, Default, Deserialize, Serialize)]
@@ -25,7 +25,7 @@ pub struct RoundSaveable {
 
 impl From<&Round> for RoundSaveable {
     fn from(round: &Round) -> Self {
-        let groups = round.groups.iter().map(|x| x.into()).collect();
+        let groups = round.groups.iter().map(|x| x.as_ref().into()).collect();
         Self {
             id: round.id.clone(),
             groups,
@@ -35,9 +35,9 @@ impl From<&Round> for RoundSaveable {
 
 impl Round {
     pub fn from_saveable(round: &RoundSaveable) -> Self {
-        let mut groups: UidContainer<Group> = Default::default();
+        let mut groups: Vec<Arc<Group>> = Default::default();
         for group in &round.groups {
-            groups.insert(Group::from_saveable(group));
+            groups.push(Arc::new(Group::from_saveable(group)));
         }
 
         Self {
@@ -46,26 +46,34 @@ impl Round {
         }
     }
 
-    pub fn new(bewerb_id: &BewerbId, n_groups: u32) -> Self {
+    pub fn new(bewerb_id: &BewerbId, n_groups: u32, round_id: u32) -> Self {
         let mut res = Self::default();
         res.id.bewerb_name = bewerb_id.bewerb_name.clone();
         res.id.bewerb_id = bewerb_id.bewerb_id;
-        for _i in 0..n_groups {
-            let group = Group::new(&res.id);
-            res.groups.push(group);
+        res.id.round_id = round_id;
+        for i in 0..n_groups {
+            let id = GroupId {
+                bewerb_name: bewerb_id.bewerb_name.clone(),
+                bewerb_id: bewerb_id.bewerb_id,
+                round_id,
+                group_id: i,
+            };
+
+            let group = Group::new(id);
+            res.groups.push(Arc::new(group));
         }
         res
     }
 
     pub fn get_all_groups(&self) -> Vec<GroupId> {
-        self.groups.iter().map(|x| (*x.id()).clone()).collect()
+        self.groups.iter().map(|x| x.id()).collect()
     }
 
     pub fn get_free_groups(&self) -> Vec<GroupId> {
         self.groups
             .iter()
             .filter(|x| x.get_arena().is_none())
-            .map(|x| (*x.id()).clone())
+            .map(|x| x.id())
             .collect()
     }
 
@@ -76,8 +84,11 @@ impl Round {
         }
     }
 
-    pub fn get_group_by_id(&mut self, id: &GroupId) -> Option<&mut Group> {
-        self.groups.get_mut(id.group_id)
+    pub fn get_group_by_id(&mut self, id: &GroupId) -> Option<Arc<Group>> {
+        self.groups
+            .iter_mut()
+            .find(|x| x.id().group_id == id.group_id)
+            .cloned()
     }
 }
 

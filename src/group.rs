@@ -1,9 +1,8 @@
 use crate::container::HasId;
-use crate::round::RoundId;
 use serde::{Deserialize, Serialize};
+use std::sync::Mutex;
 
 use crate::arena_slot::ArenaSlotId;
-
 use crate::tournament::GroupIdentifier;
 
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
@@ -38,8 +37,8 @@ impl From<GroupIdentifier> for GroupId {
 
 #[derive(Debug, Default, Deserialize, Serialize)]
 pub struct Group {
-    id: GroupId,
-    arena_slot: Option<ArenaSlotId>,
+    id: Mutex<GroupId>,
+    arena_slot: Mutex<Option<ArenaSlotId>>,
     fencers: Vec<u32>,
 }
 
@@ -53,8 +52,8 @@ pub struct GroupSaveable {
 impl From<&Group> for GroupSaveable {
     fn from(group: &Group) -> Self {
         Self {
-            id: group.id.clone(),
-            arena_slot: group.arena_slot.clone(),
+            id: group.id.lock().unwrap().clone(),
+            arena_slot: group.arena_slot.lock().unwrap().clone(),
             fencers: group.fencers.clone(),
         }
     }
@@ -63,46 +62,48 @@ impl From<&Group> for GroupSaveable {
 impl Group {
     pub fn from_saveable(group: &GroupSaveable) -> Self {
         Self {
-            id: group.id.clone(),
-            arena_slot: group.arena_slot.clone(),
+            id: Mutex::new(group.id.clone()),
+            arena_slot: Mutex::new(group.arena_slot.clone()),
             fencers: group.fencers.clone(),
         }
     }
 
-    pub fn new(id: &RoundId) -> Self {
-        let mut res = Self::default();
-        res.id.bewerb_name = id.bewerb_name.clone();
-        res.id.bewerb_id = id.bewerb_id;
-        res.id.round_id = id.round_id;
-        res
+    pub fn new(id: GroupId) -> Self {
+        let id = Mutex::new(id);
+
+        Self {
+            id,
+            arena_slot: Mutex::new(None),
+            fencers: Vec::new(),
+        }
     }
 
-    pub fn id(&self) -> &GroupId {
-        &self.id
+    pub fn id(&self) -> GroupId {
+        self.id.lock().unwrap().clone()
     }
 
-    pub fn set_bewerb_id(&mut self, id: u32) {
-        self.id.bewerb_id = id;
+    pub fn set_bewerb_id(&self, id: u32) {
+        self.id.lock().unwrap().bewerb_id = id;
     }
 
-    pub fn set_round_id(&mut self, id: u32) {
-        self.id.round_id = id;
+    pub fn set_round_id(&self, id: u32) {
+        self.id.lock().unwrap().round_id = id;
     }
 
-    pub fn get_arena(&self) -> &Option<ArenaSlotId> {
-        &self.arena_slot
+    pub fn get_arena(&self) -> Option<ArenaSlotId> {
+        self.arena_slot.lock().unwrap().clone()
     }
 
-    pub fn set_arena(&mut self, id: Option<ArenaSlotId>) {
-        self.arena_slot = id;
+    pub fn set_arena(&self, id: Option<ArenaSlotId>) {
+        *self.arena_slot.lock().unwrap() = id;
     }
 }
 
 impl HasId for Group {
     fn get_id(&self) -> u32 {
-        self.id.group_id
+        self.id.lock().unwrap().group_id
     }
     fn set_id(&mut self, id: u32) {
-        self.id.group_id = id;
+        self.id.lock().unwrap().group_id = id;
     }
 }

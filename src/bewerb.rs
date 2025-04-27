@@ -2,6 +2,7 @@ use crate::container::{HasId, UidContainer};
 use crate::group::{Group, GroupId};
 use crate::round::{Round, RoundSaveable};
 use serde::{Deserialize, Serialize};
+use std::sync::Arc;
 
 use crate::tournament::{BewerbIdentifier, SimpleBewerbData};
 
@@ -29,7 +30,7 @@ impl From<&BewerbId> for BewerbIdentifier {
     }
 }
 
-#[derive(Debug, Default, Deserialize, Serialize)]
+#[derive(Debug, Default)]
 pub struct Bewerb {
     id: BewerbId,
     n_rounds: u32,
@@ -84,8 +85,8 @@ impl Bewerb {
             rounds: UidContainer::default(),
         };
 
-        for _i in 0..n_rounds {
-            let round = Round::new(&res.id, n_groups);
+        for i in 0..n_rounds {
+            let round = Round::new(&res.id, n_groups, i);
             res.rounds.push(round);
         }
 
@@ -112,7 +113,7 @@ impl Bewerb {
         res
     }
 
-    pub fn get_group_by_id(&mut self, id: &GroupId) -> Option<&mut Group> {
+    pub fn get_group_by_id(&mut self, id: &GroupId) -> Option<Arc<Group>> {
         let round = self.rounds.get_mut(id.round_id)?;
         round.get_group_by_id(id)
     }

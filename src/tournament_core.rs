@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::fs::File;
 use std::path::Path;
+use std::sync::Arc;
 
 use crate::bewerb::{Bewerb, BewerbSaveable};
 use crate::day::{Day, DaySaveable};
@@ -151,16 +152,16 @@ impl Tournament {
         res
     }
 
-    fn get_group_by_id_internal<'a>(
-        bewerbs: &'a mut UidContainer<Bewerb>,
+    fn get_group_by_id_internal(
+        bewerbs: &mut UidContainer<Bewerb>,
         id: &GroupId,
-    ) -> Option<&'a mut Group> {
+    ) -> Option<Arc<Group>> {
         let bewerb = bewerbs.get_mut(id.bewerb_id)?;
 
         bewerb.get_group_by_id(id)
     }
 
-    pub fn get_group_by_id(&mut self, id: &GroupId) -> Option<&mut Group> {
+    pub fn get_group_by_id(&mut self, id: &GroupId) -> Option<Arc<Group>> {
         Self::get_group_by_id_internal(&mut self.bewerbs, id)
     }
 
@@ -185,7 +186,7 @@ impl Tournament {
             return Ok(());
         };
 
-        let arena = Self::get_arena_by_id_internal(&mut self.days, curr_arena_id);
+        let arena = Self::get_arena_by_id_internal(&mut self.days, &curr_arena_id);
 
         match arena {
             Some(arena) => arena.set_group(None),
