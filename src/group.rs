@@ -43,7 +43,32 @@ pub struct Group {
     fencers: Vec<u32>,
 }
 
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+pub struct GroupSaveable {
+    id: GroupId,
+    arena_slot: Option<ArenaSlotId>,
+    fencers: Vec<u32>,
+}
+
+impl From<&Group> for GroupSaveable {
+    fn from(group: &Group) -> Self {
+        Self {
+            id: group.id.clone(),
+            arena_slot: group.arena_slot.clone(),
+            fencers: group.fencers.clone(),
+        }
+    }
+}
+
 impl Group {
+    pub fn from_saveable(group: &GroupSaveable) -> Self {
+        Self {
+            id: group.id.clone(),
+            arena_slot: group.arena_slot.clone(),
+            fencers: group.fencers.clone(),
+        }
+    }
+
     pub fn new(id: &RoundId) -> Self {
         let mut res = Self::default();
         res.id.bewerb_name = id.bewerb_name.clone();

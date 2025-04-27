@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use std::fs::File;
 use std::path::Path;
 
-use crate::bewerb::Bewerb;
+use crate::bewerb::{Bewerb, BewerbSaveable};
 use crate::day::{Day, DaySaveable};
 use crate::error::Error;
 
@@ -16,12 +16,12 @@ use crate::group::{Group, GroupId};
 #[derive(Debug, Default, Deserialize, Serialize)]
 pub struct TournamentInternal {
     pub name: String,
-    pub bewerbs: UidContainer<Bewerb>,
 }
 
 #[derive(Debug, Default)]
 pub struct Tournament {
     pub inner: TournamentInternal,
+    pub bewerbs: UidContainer<Bewerb>,
     pub days: UidContainer<Day>,
     pub fencers: Fencers,
 }
@@ -50,14 +50,35 @@ impl Tournament {
         Ok(res)
     }
 
+    pub fn bewerbs_to_json_file(&self) -> Result<(), Error> {
+        let days: Vec<BewerbSaveable> = self.bewerbs.iter().map(|x| x.into()).collect();
+        let file = File::create("bewerbs.json")?;
+        serde_json::to_writer_pretty(file, &days)?;
+        Ok(())
+    }
+
+    pub fn load_bewerbs_from_json_file() -> Result<UidContainer<Bewerb>, Error> {
+        let file = File::open("bewerbs.json")?;
+        let bewerbs: Vec<BewerbSaveable> = serde_json::from_reader(file)?;
+
+        let mut res: UidContainer<Bewerb> = Default::default();
+        for bewerb in &bewerbs {
+            res.insert(Bewerb::from_saveable(bewerb));
+        }
+
+        Ok(res)
+    }
+
     pub fn from_json_file(path: &Path) -> Result<Tournament, Error> {
         let file = File::open(path)?;
         let inner = serde_json::from_reader(file)?;
         let fencers = Fencers::from_json_file().unwrap_or_default();
         let days = Self::load_days_from_json_file().unwrap_or_default();
+        let bewerbs = Self::load_bewerbs_from_json_file().unwrap_or_default();
 
         Ok(Tournament {
             inner,
+            bewerbs,
             fencers,
             days,
         })
@@ -70,6 +91,9 @@ impl Tournament {
             println!("error while saving fencers {:?}", err);
         }
         if let Err(err) = self.days_to_json_file() {
+            println!("error while saving fencers {:?}", err);
+        }
+        if let Err(err) = self.bewerbs_to_json_file() {
             println!("error while saving fencers {:?}", err);
         }
 
@@ -97,11 +121,11 @@ impl Tournament {
 
     pub fn add_bewerb(&mut self, name: String, n_rounds: u32, n_groups: u32) {
         let bewerb = Bewerb::new(name, n_rounds, n_groups);
-        self.inner.bewerbs.push(bewerb);
+        self.bewerbs.push(bewerb);
     }
 
     pub fn remove_bewerb(&mut self, id: u32) {
-        let Some(bewerb) = self.inner.bewerbs.get(id) else {
+        let Some(bewerb) = self.bewerbs.get(id) else {
             return;
         };
 
@@ -110,17 +134,17 @@ impl Tournament {
             let _ = self.freeup_group(&group);
         }
 
-        self.inner.bewerbs.remove(id);
+        self.bewerbs.remove(id);
     }
 
     pub fn get_bewerbs(&self) -> Vec<&Bewerb> {
-        self.inner.bewerbs.iter().collect()
+        self.bewerbs.iter().collect()
     }
 
     pub fn get_all_free_groups(&self) -> Vec<GroupId> {
         let mut res = Vec::new();
 
-        for bewerb in self.inner.bewerbs.iter() {
+        for bewerb in self.bewerbs.iter() {
             let mut round_groups = bewerb.get_free_groups();
             res.append(&mut round_groups);
         }
@@ -137,7 +161,7 @@ impl Tournament {
     }
 
     pub fn get_group_by_id(&mut self, id: &GroupId) -> Option<&mut Group> {
-        Self::get_group_by_id_internal(&mut self.inner.bewerbs, id)
+        Self::get_group_by_id_internal(&mut self.bewerbs, id)
     }
 
     fn get_arena_by_id_internal<'a>(
@@ -153,7 +177,7 @@ impl Tournament {
     }
 
     pub fn freeup_group(&mut self, id: &GroupId) -> Result<(), Error> {
-        let Some(group) = Self::get_group_by_id_internal(&mut self.inner.bewerbs, id) else {
+        let Some(group) = Self::get_group_by_id_internal(&mut self.bewerbs, id) else {
             return Err(Error::InvalidInput(format!("Ivalid group_id {:?}", id)));
         };
 
@@ -181,7 +205,7 @@ impl Tournament {
             return Ok(());
         };
 
-        let group = Self::get_group_by_id_internal(&mut self.inner.bewerbs, curr_group_id);
+        let group = Self::get_group_by_id_internal(&mut self.bewerbs, curr_group_id);
 
         match group {
             Some(group) => group.set_arena(None),
@@ -204,7 +228,7 @@ impl Tournament {
             return Err(Error::InvalidInput("Ivalid arena_id".to_string()));
         };
 
-        let Some(group) = Self::get_group_by_id_internal(&mut self.inner.bewerbs, group_id) else {
+        let Some(group) = Self::get_group_by_id_internal(&mut self.bewerbs, group_id) else {
             return Err(Error::InvalidInput("Ivalid group_id".to_string()));
         };
 

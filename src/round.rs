@@ -1,10 +1,10 @@
 use crate::bewerb::BewerbId;
 use crate::container::HasId;
 use crate::container::UidContainer;
-use crate::group::{Group, GroupId};
+use crate::group::{Group, GroupId, GroupSaveable};
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct RoundId {
     pub bewerb_name: String,
     pub bewerb_id: u32,
@@ -17,7 +17,35 @@ pub struct Round {
     groups: UidContainer<Group>,
 }
 
+#[derive(Debug, Default, Deserialize, Serialize)]
+pub struct RoundSaveable {
+    id: RoundId,
+    groups: Vec<GroupSaveable>,
+}
+
+impl From<&Round> for RoundSaveable {
+    fn from(round: &Round) -> Self {
+        let groups = round.groups.iter().map(|x| x.into()).collect();
+        Self {
+            id: round.id.clone(),
+            groups,
+        }
+    }
+}
+
 impl Round {
+    pub fn from_saveable(round: &RoundSaveable) -> Self {
+        let mut groups: UidContainer<Group> = Default::default();
+        for group in &round.groups {
+            groups.insert(Group::from_saveable(group));
+        }
+
+        Self {
+            id: round.id.clone(),
+            groups,
+        }
+    }
+
     pub fn new(bewerb_id: &BewerbId, n_groups: u32) -> Self {
         let mut res = Self::default();
         res.id.bewerb_name = bewerb_id.bewerb_name.clone();

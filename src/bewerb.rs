@@ -1,6 +1,6 @@
 use crate::container::{HasId, UidContainer};
 use crate::group::{Group, GroupId};
-use crate::round::Round;
+use crate::round::{Round, RoundSaveable};
 use serde::{Deserialize, Serialize};
 
 use crate::tournament::{BewerbIdentifier, SimpleBewerbData};
@@ -37,7 +37,42 @@ pub struct Bewerb {
     rounds: UidContainer<Round>,
 }
 
+#[derive(Debug, Default, Deserialize, Serialize)]
+pub struct BewerbSaveable {
+    id: BewerbId,
+    n_rounds: u32,
+    n_groups: u32,
+    rounds: Vec<RoundSaveable>,
+}
+
+impl From<&Bewerb> for BewerbSaveable {
+    fn from(bewerb: &Bewerb) -> Self {
+        let rounds = bewerb.rounds.iter().map(|x| x.into()).collect();
+
+        Self {
+            id: bewerb.id.clone(),
+            n_rounds: bewerb.n_rounds,
+            n_groups: bewerb.n_groups,
+            rounds,
+        }
+    }
+}
+
 impl Bewerb {
+    pub fn from_saveable(bewerb: &BewerbSaveable) -> Self {
+        let mut rounds: UidContainer<Round> = Default::default();
+        for round in bewerb.rounds.iter() {
+            rounds.insert(Round::from_saveable(round));
+        }
+
+        Self {
+            id: bewerb.id.clone(),
+            n_rounds: bewerb.n_rounds,
+            n_groups: bewerb.n_groups,
+            rounds,
+        }
+    }
+
     pub fn new(name: String, n_rounds: u32, n_groups: u32) -> Self {
         let mut res = Bewerb {
             id: BewerbId {
