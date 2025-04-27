@@ -12,7 +12,7 @@ pub struct BewerbId {
 }
 
 impl From<&BewerbIdentifier> for BewerbId {
-    fn from(id: &BewerbIdentifier) -> Self{
+    fn from(id: &BewerbIdentifier) -> Self {
         Self {
             bewerb_name: id.name.clone(),
             bewerb_id: id.id,
@@ -23,7 +23,7 @@ impl From<&BewerbIdentifier> for BewerbId {
 impl From<&BewerbId> for BewerbIdentifier {
     fn from(id: &BewerbId) -> Self {
         Self {
-            id: id.bewerb_id, 
+            id: id.bewerb_id,
             name: id.bewerb_name.to_owned(),
         }
     }

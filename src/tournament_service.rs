@@ -7,7 +7,6 @@ use crate::tournament::{
     RemoveBewerbResponse, RemoveDayRequest, RemoveDayResponse, SaveRequest, SaveResponse,
 };
 
-
 use crate::tournament_core::Tournament;
 
 use std::path::Path;
@@ -21,9 +20,7 @@ pub struct TournamentService {
 
 impl TournamentService {
     pub fn new(tournament: Arc<Mutex<Option<Tournament>>>) -> Self {
-        Self {
-            tournament,
-        }
+        Self { tournament }
     }
 }
 
@@ -43,7 +40,7 @@ impl tournament_server::Tournament for TournamentService {
         };
 
         let change_name_request = request.into_inner();
-        tournament.name = change_name_request.name;
+        tournament.inner.name = change_name_request.name;
 
         Ok(tonic::Response::new(ChangeNameResponse {
             success: true,

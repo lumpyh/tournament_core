@@ -4,9 +4,9 @@
     "vec": [
       {
         "id": 0,
-        "date": "2025-03-07",
-        "n_ts": 7,
-        "n_kp": 4,
+        "date": "1970-01-01",
+        "n_ts": 5,
+        "n_kp": 5,
         "timeslots": {
           "vec": [
             {
@@ -22,12 +22,7 @@
                       "timeslot_id": 0,
                       "arena_slot_id": 0
                     },
-                    "group": {
-                      "bewerb_name": "Schwert Offen",
-                      "bewerb_id": 0,
-                      "round_id": 0,
-                      "group_id": 0
-                    }
+                    "group": null
                   },
                   {
                     "id": {
@@ -35,12 +30,7 @@
                       "timeslot_id": 0,
                       "arena_slot_id": 1
                     },
-                    "group": {
-                      "bewerb_name": "Schwert Offen",
-                      "bewerb_id": 0,
-                      "round_id": 0,
-                      "group_id": 1
-                    }
+                    "group": null
                   },
                   {
                     "id": {
@@ -48,12 +38,7 @@
                       "timeslot_id": 0,
                       "arena_slot_id": 2
                     },
-                    "group": {
-                      "bewerb_name": "Schwert Offen",
-                      "bewerb_id": 0,
-                      "round_id": 0,
-                      "group_id": 2
-                    }
+                    "group": null
                   },
                   {
                     "id": {
@@ -61,12 +46,15 @@
                       "timeslot_id": 0,
                       "arena_slot_id": 3
                     },
-                    "group": {
-                      "bewerb_name": "Schwert Offen",
-                      "bewerb_id": 0,
-                      "round_id": 0,
-                      "group_id": 3
-                    }
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 0,
+                      "arena_slot_id": 4
+                    },
+                    "group": null
                   }
                 ]
               }
@@ -84,12 +72,7 @@
                       "timeslot_id": 1,
                       "arena_slot_id": 0
                     },
-                    "group": {
-                      "bewerb_name": "Schwert Offen",
-                      "bewerb_id": 0,
-                      "round_id": 0,
-                      "group_id": 4
-                    }
+                    "group": null
                   },
                   {
                     "id": {
@@ -97,12 +80,7 @@
                       "timeslot_id": 1,
                       "arena_slot_id": 1
                     },
-                    "group": {
-                      "bewerb_name": "Schwert Damen",
-                      "bewerb_id": 1,
-                      "round_id": 0,
-                      "group_id": 0
-                    }
+                    "group": null
                   },
                   {
                     "id": {
@@ -110,18 +88,21 @@
                       "timeslot_id": 1,
                       "arena_slot_id": 2
                     },
-                    "group": {
-                      "bewerb_name": "Schwert Damen",
-                      "bewerb_id": 1,
-                      "round_id": 0,
-                      "group_id": 1
-                    }
+                    "group": null
                   },
                   {
                     "id": {
                       "day_id": 0,
                       "timeslot_id": 1,
                       "arena_slot_id": 3
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 1,
+                      "arena_slot_id": 4
                     },
                     "group": null
                   }
@@ -166,6 +147,14 @@
                       "arena_slot_id": 3
                     },
                     "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 2,
+                      "arena_slot_id": 4
+                    },
+                    "group": null
                   }
                 ]
               }
@@ -183,12 +172,7 @@
                       "timeslot_id": 3,
                       "arena_slot_id": 0
                     },
-                    "group": {
-                      "bewerb_name": "Schwert Offen",
-                      "bewerb_id": 0,
-                      "round_id": 1,
-                      "group_id": 0
-                    }
+                    "group": null
                   },
                   {
                     "id": {
@@ -211,6 +195,14 @@
                       "day_id": 0,
                       "timeslot_id": 3,
                       "arena_slot_id": 3
+                    },
+                    "group": null
+                  },
+                  {
+                    "id": {
+                      "day_id": 0,
+                      "timeslot_id": 3,
+                      "arena_slot_id": 4
                     },
                     "group": null
                   }
@@ -230,12 +222,7 @@
                       "timeslot_id": 4,
                       "arena_slot_id": 0
                     },
-                    "group": {
-                      "bewerb_name": "Schwert Offen",
-                      "bewerb_id": 0,
-                      "round_id": 1,
-                      "group_id": 1
-                    }
+                    "group": null
                   },
                   {
                     "id": {
@@ -243,12 +230,7 @@
                       "timeslot_id": 4,
                       "arena_slot_id": 1
                     },
-                    "group": {
-                      "bewerb_name": "Schwert Offen",
-                      "bewerb_id": 0,
-                      "round_id": 1,
-                      "group_id": 2
-                    }
+                    "group": null
                   },
                   {
                     "id": {
@@ -256,12 +238,7 @@
                       "timeslot_id": 4,
                       "arena_slot_id": 2
                     },
-                    "group": {
-                      "bewerb_name": "Schwert Offen",
-                      "bewerb_id": 0,
-                      "round_id": 1,
-                      "group_id": 3
-                    }
+                    "group": null
                   },
                   {
                     "id": {
@@ -269,398 +246,13 @@
                       "timeslot_id": 4,
                       "arena_slot_id": 3
                     },
-                    "group": {
-                      "bewerb_name": "Schwert Offen",
-                      "bewerb_id": 0,
-                      "round_id": 1,
-                      "group_id": 4
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "id": {
-                "day_id": 0,
-                "timeslot_id": 5
-              },
-              "arenas": {
-                "vec": [
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 5,
-                      "arena_slot_id": 0
-                    },
                     "group": null
                   },
                   {
                     "id": {
                       "day_id": 0,
-                      "timeslot_id": 5,
-                      "arena_slot_id": 1
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 5,
-                      "arena_slot_id": 2
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 5,
-                      "arena_slot_id": 3
-                    },
-                    "group": null
-                  }
-                ]
-              }
-            },
-            {
-              "id": {
-                "day_id": 0,
-                "timeslot_id": 6
-              },
-              "arenas": {
-                "vec": [
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 6,
-                      "arena_slot_id": 0
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 6,
-                      "arena_slot_id": 1
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 6,
-                      "arena_slot_id": 2
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 0,
-                      "timeslot_id": 6,
-                      "arena_slot_id": 3
-                    },
-                    "group": null
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      {
-        "id": 1,
-        "date": "2025-03-08",
-        "n_ts": 7,
-        "n_kp": 4,
-        "timeslots": {
-          "vec": [
-            {
-              "id": {
-                "day_id": 1,
-                "timeslot_id": 0
-              },
-              "arenas": {
-                "vec": [
-                  {
-                    "id": {
-                      "day_id": 1,
-                      "timeslot_id": 0,
-                      "arena_slot_id": 0
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 1,
-                      "timeslot_id": 0,
-                      "arena_slot_id": 1
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 1,
-                      "timeslot_id": 0,
-                      "arena_slot_id": 2
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 1,
-                      "timeslot_id": 0,
-                      "arena_slot_id": 3
-                    },
-                    "group": null
-                  }
-                ]
-              }
-            },
-            {
-              "id": {
-                "day_id": 1,
-                "timeslot_id": 1
-              },
-              "arenas": {
-                "vec": [
-                  {
-                    "id": {
-                      "day_id": 1,
-                      "timeslot_id": 1,
-                      "arena_slot_id": 0
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 1,
-                      "timeslot_id": 1,
-                      "arena_slot_id": 1
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 1,
-                      "timeslot_id": 1,
-                      "arena_slot_id": 2
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 1,
-                      "timeslot_id": 1,
-                      "arena_slot_id": 3
-                    },
-                    "group": null
-                  }
-                ]
-              }
-            },
-            {
-              "id": {
-                "day_id": 1,
-                "timeslot_id": 2
-              },
-              "arenas": {
-                "vec": [
-                  {
-                    "id": {
-                      "day_id": 1,
-                      "timeslot_id": 2,
-                      "arena_slot_id": 0
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 1,
-                      "timeslot_id": 2,
-                      "arena_slot_id": 1
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 1,
-                      "timeslot_id": 2,
-                      "arena_slot_id": 2
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 1,
-                      "timeslot_id": 2,
-                      "arena_slot_id": 3
-                    },
-                    "group": null
-                  }
-                ]
-              }
-            },
-            {
-              "id": {
-                "day_id": 1,
-                "timeslot_id": 3
-              },
-              "arenas": {
-                "vec": [
-                  {
-                    "id": {
-                      "day_id": 1,
-                      "timeslot_id": 3,
-                      "arena_slot_id": 0
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 1,
-                      "timeslot_id": 3,
-                      "arena_slot_id": 1
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 1,
-                      "timeslot_id": 3,
-                      "arena_slot_id": 2
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 1,
-                      "timeslot_id": 3,
-                      "arena_slot_id": 3
-                    },
-                    "group": null
-                  }
-                ]
-              }
-            },
-            {
-              "id": {
-                "day_id": 1,
-                "timeslot_id": 4
-              },
-              "arenas": {
-                "vec": [
-                  {
-                    "id": {
-                      "day_id": 1,
                       "timeslot_id": 4,
-                      "arena_slot_id": 0
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 1,
-                      "timeslot_id": 4,
-                      "arena_slot_id": 1
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 1,
-                      "timeslot_id": 4,
-                      "arena_slot_id": 2
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 1,
-                      "timeslot_id": 4,
-                      "arena_slot_id": 3
-                    },
-                    "group": null
-                  }
-                ]
-              }
-            },
-            {
-              "id": {
-                "day_id": 1,
-                "timeslot_id": 5
-              },
-              "arenas": {
-                "vec": [
-                  {
-                    "id": {
-                      "day_id": 1,
-                      "timeslot_id": 5,
-                      "arena_slot_id": 0
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 1,
-                      "timeslot_id": 5,
-                      "arena_slot_id": 1
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 1,
-                      "timeslot_id": 5,
-                      "arena_slot_id": 2
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 1,
-                      "timeslot_id": 5,
-                      "arena_slot_id": 3
-                    },
-                    "group": null
-                  }
-                ]
-              }
-            },
-            {
-              "id": {
-                "day_id": 1,
-                "timeslot_id": 6
-              },
-              "arenas": {
-                "vec": [
-                  {
-                    "id": {
-                      "day_id": 1,
-                      "timeslot_id": 6,
-                      "arena_slot_id": 0
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 1,
-                      "timeslot_id": 6,
-                      "arena_slot_id": 1
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 1,
-                      "timeslot_id": 6,
-                      "arena_slot_id": 2
-                    },
-                    "group": null
-                  },
-                  {
-                    "id": {
-                      "day_id": 1,
-                      "timeslot_id": 6,
-                      "arena_slot_id": 3
+                      "arena_slot_id": 4
                     },
                     "group": null
                   }
@@ -676,7 +268,7 @@
     "vec": [
       {
         "id": {
-          "bewerb_name": "Schwert Offen",
+          "bewerb_name": "LSo",
           "bewerb_id": 0
         },
         "n_rounds": 2,
@@ -685,7 +277,7 @@
           "vec": [
             {
               "id": {
-                "bewerb_name": "Schwert Offen",
+                "bewerb_name": "LSo",
                 "bewerb_id": 0,
                 "round_id": 0
               },
@@ -693,72 +285,52 @@
                 "vec": [
                   {
                     "id": {
-                      "bewerb_name": "Schwert Offen",
+                      "bewerb_name": "LSo",
                       "bewerb_id": 0,
                       "round_id": 0,
                       "group_id": 0
                     },
-                    "arena_slot": {
-                      "day_id": 0,
-                      "timeslot_id": 0,
-                      "arena_slot_id": 0
-                    },
+                    "arena_slot": null,
                     "fencers": []
                   },
                   {
                     "id": {
-                      "bewerb_name": "Schwert Offen",
+                      "bewerb_name": "LSo",
                       "bewerb_id": 0,
                       "round_id": 0,
                       "group_id": 1
                     },
-                    "arena_slot": {
-                      "day_id": 0,
-                      "timeslot_id": 0,
-                      "arena_slot_id": 1
-                    },
+                    "arena_slot": null,
                     "fencers": []
                   },
                   {
                     "id": {
-                      "bewerb_name": "Schwert Offen",
+                      "bewerb_name": "LSo",
                       "bewerb_id": 0,
                       "round_id": 0,
                       "group_id": 2
                     },
-                    "arena_slot": {
-                      "day_id": 0,
-                      "timeslot_id": 0,
-                      "arena_slot_id": 2
-                    },
+                    "arena_slot": null,
                     "fencers": []
                   },
                   {
                     "id": {
-                      "bewerb_name": "Schwert Offen",
+                      "bewerb_name": "LSo",
                       "bewerb_id": 0,
                       "round_id": 0,
                       "group_id": 3
                     },
-                    "arena_slot": {
-                      "day_id": 0,
-                      "timeslot_id": 0,
-                      "arena_slot_id": 3
-                    },
+                    "arena_slot": null,
                     "fencers": []
                   },
                   {
                     "id": {
-                      "bewerb_name": "Schwert Offen",
+                      "bewerb_name": "LSo",
                       "bewerb_id": 0,
                       "round_id": 0,
                       "group_id": 4
                     },
-                    "arena_slot": {
-                      "day_id": 0,
-                      "timeslot_id": 1,
-                      "arena_slot_id": 0
-                    },
+                    "arena_slot": null,
                     "fencers": []
                   }
                 ]
@@ -766,7 +338,7 @@
             },
             {
               "id": {
-                "bewerb_name": "Schwert Offen",
+                "bewerb_name": "LSo",
                 "bewerb_id": 0,
                 "round_id": 1
               },
@@ -774,72 +346,52 @@
                 "vec": [
                   {
                     "id": {
-                      "bewerb_name": "Schwert Offen",
+                      "bewerb_name": "LSo",
                       "bewerb_id": 0,
                       "round_id": 1,
                       "group_id": 0
                     },
-                    "arena_slot": {
-                      "day_id": 0,
-                      "timeslot_id": 3,
-                      "arena_slot_id": 0
-                    },
+                    "arena_slot": null,
                     "fencers": []
                   },
                   {
                     "id": {
-                      "bewerb_name": "Schwert Offen",
+                      "bewerb_name": "LSo",
                       "bewerb_id": 0,
                       "round_id": 1,
                       "group_id": 1
                     },
-                    "arena_slot": {
-                      "day_id": 0,
-                      "timeslot_id": 4,
-                      "arena_slot_id": 0
-                    },
+                    "arena_slot": null,
                     "fencers": []
                   },
                   {
                     "id": {
-                      "bewerb_name": "Schwert Offen",
+                      "bewerb_name": "LSo",
                       "bewerb_id": 0,
                       "round_id": 1,
                       "group_id": 2
                     },
-                    "arena_slot": {
-                      "day_id": 0,
-                      "timeslot_id": 4,
-                      "arena_slot_id": 1
-                    },
+                    "arena_slot": null,
                     "fencers": []
                   },
                   {
                     "id": {
-                      "bewerb_name": "Schwert Offen",
+                      "bewerb_name": "LSo",
                       "bewerb_id": 0,
                       "round_id": 1,
                       "group_id": 3
                     },
-                    "arena_slot": {
-                      "day_id": 0,
-                      "timeslot_id": 4,
-                      "arena_slot_id": 2
-                    },
+                    "arena_slot": null,
                     "fencers": []
                   },
                   {
                     "id": {
-                      "bewerb_name": "Schwert Offen",
+                      "bewerb_name": "LSo",
                       "bewerb_id": 0,
                       "round_id": 1,
                       "group_id": 4
                     },
-                    "arena_slot": {
-                      "day_id": 0,
-                      "timeslot_id": 4,
-                      "arena_slot_id": 3
-                    },
+                    "arena_slot": null,
                     "fencers": []
                   }
                 ]
@@ -850,7 +402,7 @@
       },
       {
         "id": {
-          "bewerb_name": "Schwert Damen",
+          "bewerb_name": "LSf",
           "bewerb_id": 1
         },
         "n_rounds": 1,
@@ -859,7 +411,7 @@
           "vec": [
             {
               "id": {
-                "bewerb_name": "Schwert Damen",
+                "bewerb_name": "LSf",
                 "bewerb_id": 1,
                 "round_id": 0
               },
@@ -867,30 +419,22 @@
                 "vec": [
                   {
                     "id": {
-                      "bewerb_name": "Schwert Damen",
+                      "bewerb_name": "LSf",
                       "bewerb_id": 1,
                       "round_id": 0,
                       "group_id": 0
                     },
-                    "arena_slot": {
-                      "day_id": 0,
-                      "timeslot_id": 1,
-                      "arena_slot_id": 1
-                    },
+                    "arena_slot": null,
                     "fencers": []
                   },
                   {
                     "id": {
-                      "bewerb_name": "Schwert Damen",
+                      "bewerb_name": "LSf",
                       "bewerb_id": 1,
                       "round_id": 0,
                       "group_id": 1
                     },
-                    "arena_slot": {
-                      "day_id": 0,
-                      "timeslot_id": 1,
-                      "arena_slot_id": 2
-                    },
+                    "arena_slot": null,
                     "fencers": []
                   }
                 ]

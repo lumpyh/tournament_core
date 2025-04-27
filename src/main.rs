@@ -1,12 +1,12 @@
-use tournament_core::tournament::tournament_server::TournamentServer;
-use tournament_core::tournament::fencer_server::FencerServer;
-use tournament_core::tournament_service::TournamentService;
 use tournament_core::fencer_service::FencerService;
+use tournament_core::tournament::fencer_server::FencerServer;
+use tournament_core::tournament::tournament_server::TournamentServer;
 use tournament_core::tournament_core::Tournament;
+use tournament_core::tournament_service::TournamentService;
 
 use std::sync::Arc;
-use tonic::transport::Server;
 use tokio::sync::Mutex;
+use tonic::transport::Server;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {

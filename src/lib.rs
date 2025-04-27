@@ -1,8 +1,8 @@
 mod container;
 mod error;
+pub mod fencer_service;
 pub mod tournament_core;
 pub mod tournament_service;
-pub mod fencer_service;
 
 mod bewerb;
 mod group;

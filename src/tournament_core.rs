@@ -10,15 +10,20 @@ use crate::tournament::{DayData, SimpleDay, SimpleFencer};
 
 use crate::arena_slot::{ArenaSlot, ArenaSlotId};
 use crate::container::UidContainer;
-use crate::fencer::Fencer;
+use crate::fencer::{Fencer, Fencers};
 use crate::group::{Group, GroupId};
 
 #[derive(Debug, Default, Deserialize, Serialize)]
-pub struct Tournament {
+pub struct TournamentInternal {
     pub name: String,
     pub days: UidContainer<Day>,
     pub bewerbs: UidContainer<Bewerb>,
-    pub fencers: UidContainer<Fencer>,
+}
+
+#[derive(Debug, Default)]
+pub struct Tournament {
+    pub inner: TournamentInternal,
+    pub fencers: Fencers,
 }
 
 impl Tournament {
@@ -28,42 +33,47 @@ impl Tournament {
 
     pub fn from_json_file(path: &Path) -> Result<Tournament, Error> {
         let file = File::open(path)?;
-        let tournament = serde_json::from_reader(file)?;
-        Ok(tournament)
+        let inner = serde_json::from_reader(file)?;
+        let fencers = Fencers::from_json_file().unwrap_or_default();
+
+        Ok(Tournament { inner, fencers })
     }
 
     pub fn to_json_file(&self, path: &Path) -> Result<(), Error> {
         let file = File::create(path)?;
-        serde_json::to_writer_pretty(file, self)?;
+        serde_json::to_writer_pretty(file, &self.inner)?;
+        if let Err(err) = self.fencers.save_to_file() {
+            println!("error while saving fencers {:?}", err);
+        }
         Ok(())
     }
 
     pub fn add_day(&mut self, mut day: Day) {
         let mut id = 0;
-        let ids: Vec<u32> = self.days.iter().map(|x| x.id).collect();
+        let ids: Vec<u32> = self.inner.days.iter().map(|x| x.id).collect();
         while ids.contains(&id) {
             id += 1;
         }
         day.id = id;
 
-        self.days.push(day);
+        self.inner.days.push(day);
     }
 
     pub fn remove_day(&mut self, id: u32) {
-        self.days.remove(id);
+        self.inner.days.remove(id);
     }
 
     pub fn get_simple_days(&self) -> Vec<SimpleDay> {
-        self.days.iter().map(|e| e.into()).collect()
+        self.inner.days.iter().map(|e| e.into()).collect()
     }
 
     pub fn add_bewerb(&mut self, name: String, n_rounds: u32, n_groups: u32) {
         let bewerb = Bewerb::new(name, n_rounds, n_groups);
-        self.bewerbs.push(bewerb);
+        self.inner.bewerbs.push(bewerb);
     }
 
     pub fn remove_bewerb(&mut self, id: u32) {
-        let Some(bewerb) = self.bewerbs.get(id) else {
+        let Some(bewerb) = self.inner.bewerbs.get(id) else {
             return;
         };
 
@@ -72,17 +82,17 @@ impl Tournament {
             let _ = self.freeup_group(&group);
         }
 
-        self.bewerbs.remove(id);
+        self.inner.bewerbs.remove(id);
     }
 
     pub fn get_bewerbs(&self) -> Vec<&Bewerb> {
-        self.bewerbs.iter().collect()
+        self.inner.bewerbs.iter().collect()
     }
 
     pub fn get_all_free_groups(&self) -> Vec<GroupId> {
         let mut res = Vec::new();
 
-        for bewerb in self.bewerbs.iter() {
+        for bewerb in self.inner.bewerbs.iter() {
             let mut round_groups = bewerb.get_free_groups();
             res.append(&mut round_groups);
         }
@@ -99,7 +109,7 @@ impl Tournament {
     }
 
     pub fn get_group_by_id(&mut self, id: &GroupId) -> Option<&mut Group> {
-        Self::get_group_by_id_internal(&mut self.bewerbs, id)
+        Self::get_group_by_id_internal(&mut self.inner.bewerbs, id)
     }
 
     fn get_arena_by_id_internal<'a>(
@@ -111,11 +121,11 @@ impl Tournament {
     }
 
     pub fn get_arena_by_id(&mut self, id: &ArenaSlotId) -> Option<&mut ArenaSlot> {
-        Self::get_arena_by_id_internal(&mut self.days, id)
+        Self::get_arena_by_id_internal(&mut self.inner.days, id)
     }
 
     pub fn freeup_group(&mut self, id: &GroupId) -> Result<(), Error> {
-        let Some(group) = Self::get_group_by_id_internal(&mut self.bewerbs, id) else {
+        let Some(group) = Self::get_group_by_id_internal(&mut self.inner.bewerbs, id) else {
             return Err(Error::InvalidInput(format!("Ivalid group_id {:?}", id)));
         };
 
@@ -123,7 +133,7 @@ impl Tournament {
             return Ok(());
         };
 
-        let arena = Self::get_arena_by_id_internal(&mut self.days, curr_arena_id);
+        let arena = Self::get_arena_by_id_internal(&mut self.inner.days, curr_arena_id);
 
         match arena {
             Some(arena) => arena.set_group(None),
@@ -135,7 +145,7 @@ impl Tournament {
     }
 
     fn freeup_arena(&mut self, id: &ArenaSlotId) -> Result<(), Error> {
-        let Some(arena) = Self::get_arena_by_id_internal(&mut self.days, id) else {
+        let Some(arena) = Self::get_arena_by_id_internal(&mut self.inner.days, id) else {
             return Err(Error::InvalidInput(format!("Ivalid arena_id {:?}", id)));
         };
 
@@ -143,7 +153,7 @@ impl Tournament {
             return Ok(());
         };
 
-        let group = Self::get_group_by_id_internal(&mut self.bewerbs, curr_group_id);
+        let group = Self::get_group_by_id_internal(&mut self.inner.bewerbs, curr_group_id);
 
         match group {
             Some(group) => group.set_arena(None),
@@ -162,11 +172,11 @@ impl Tournament {
         self.freeup_arena(arena_id)?;
         self.freeup_group(group_id)?;
 
-        let Some(arena) = Self::get_arena_by_id_internal(&mut self.days, arena_id) else {
+        let Some(arena) = Self::get_arena_by_id_internal(&mut self.inner.days, arena_id) else {
             return Err(Error::InvalidInput("Ivalid arena_id".to_string()));
         };
 
-        let Some(group) = Self::get_group_by_id_internal(&mut self.bewerbs, group_id) else {
+        let Some(group) = Self::get_group_by_id_internal(&mut self.inner.bewerbs, group_id) else {
             return Err(Error::InvalidInput("Ivalid group_id".to_string()));
         };
 
@@ -177,22 +187,28 @@ impl Tournament {
     }
 
     pub fn get_day_data(&self, id: u32) -> Result<DayData, Error> {
-        let Some(day) = self.days.get(id) else {
+        let Some(day) = self.inner.days.get(id) else {
             return Err(Error::InvalidInput(format!("Ivalid arena_id {:?}", id)));
         };
 
         Ok(day.into())
     }
 
-    // pub fn add_fencers(&mut self, new_fencers: Vec<NewFencer>) -> Result<(), Error> {
-    //     for new_fencer in new_fencers.iter() {
-    //         let fencer = new_fencer.into();
-    //         self.fencers.push(fencer);
-    //     }
-    //     Ok(())
-    // }
+    pub fn get_all_fencers(&mut self) -> Result<Vec<SimpleFencer>, Error> {
+        Ok(self.fencers.iter().map(|x| x.as_ref().into()).collect())
+    }
 
-    pub fn get_all_fencers(&mut self) -> Result<Vec<SimpleFencer>,Error> {
-        Ok(self.fencers.iter().map(|x| x.into()).collect())
+    pub fn update_fencers(&mut self, fencers: Vec<SimpleFencer>) {
+        for fencer in fencers {
+            if let Some(item) = self.fencers.iter_mut().find(|x| x.is_same(&fencer)) {
+                item.update(fencer.clone());
+            } else {
+                let new_fencer = Fencer::new(
+                    fencer.name.to_owned(),
+                    &fencer.bewerbs.iter().map(|x| x.into()).collect(),
+                );
+                self.fencers.push(new_fencer);
+            }
+        }
     }
 }
