@@ -74,10 +74,10 @@ impl Bewerb {
         }
     }
 
-    pub fn new(name: String, n_rounds: u32, n_groups: u32) -> Self {
+    pub fn new(bewerb_id: u32, name: String, n_rounds: u32, n_groups: u32) -> Self {
         let mut res = Bewerb {
             id: BewerbId {
-                bewerb_id: 0,
+                bewerb_id,
                 bewerb_name: name.clone(),
             },
             n_rounds,
@@ -136,8 +136,5 @@ impl HasId for Bewerb {
     }
     fn set_id(&mut self, id: u32) {
         self.id.bewerb_id = id;
-        for round in self.rounds.iter_mut() {
-            round.set_bewerb_id(id);
-        }
     }
 }

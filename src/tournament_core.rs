@@ -121,8 +121,9 @@ impl Tournament {
     }
 
     pub fn add_bewerb(&mut self, name: String, n_rounds: u32, n_groups: u32) {
-        let bewerb = Bewerb::new(name, n_rounds, n_groups);
-        self.bewerbs.push(bewerb);
+        let id = self.bewerbs.get_next_id();
+        let bewerb = Bewerb::new(id, name, n_rounds, n_groups);
+        self.bewerbs.insert(bewerb);
     }
 
     pub fn remove_bewerb(&mut self, id: u32) {

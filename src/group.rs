@@ -82,14 +82,6 @@ impl Group {
         self.id.lock().unwrap().clone()
     }
 
-    pub fn set_bewerb_id(&self, id: u32) {
-        self.id.lock().unwrap().bewerb_id = id;
-    }
-
-    pub fn set_round_id(&self, id: u32) {
-        self.id.lock().unwrap().round_id = id;
-    }
-
     pub fn get_arena(&self) -> Option<ArenaSlotId> {
         self.arena_slot.lock().unwrap().clone()
     }

@@ -25,6 +25,10 @@ impl<T: HasId> UidContainer<T> {
         id
     }
 
+    pub fn get_next_id(&self) -> u32 {
+        self.get_new_id()
+    }
+
     pub fn push(&mut self, mut item: T) {
         let id = self.get_new_id();
         item.set_id(id);

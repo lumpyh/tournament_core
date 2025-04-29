@@ -77,13 +77,6 @@ impl Round {
             .collect()
     }
 
-    pub fn set_bewerb_id(&mut self, id: u32) {
-        self.id.bewerb_id = id;
-        for group in self.groups.iter_mut() {
-            group.set_bewerb_id(id);
-        }
-    }
-
     pub fn get_group_by_id(&mut self, id: &GroupId) -> Option<Arc<Group>> {
         self.groups
             .iter_mut()
@@ -98,8 +91,5 @@ impl HasId for Round {
     }
     fn set_id(&mut self, id: u32) {
         self.id.round_id = id;
-        for group in self.groups.iter_mut() {
-            group.set_round_id(id);
-        }
     }
 }
