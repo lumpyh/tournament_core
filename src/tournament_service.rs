@@ -124,7 +124,7 @@ impl tournament_server::Tournament for TournamentService {
                 "day is not set".to_string(),
             ));
         };
-        tournament.add_day(day.into());
+        tournament.add_day(day);
 
         Ok(tonic::Response::new(AddDayResponse {}))
     }

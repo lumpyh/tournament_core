@@ -2,10 +2,11 @@ use crate::container::HasId;
 use crate::group::GroupId;
 use crate::timeslot::TimeslotId;
 use serde::{Deserialize, Serialize};
+use std::sync::Mutex;
 
 use crate::tournament::{ArenaData, ArenaIdentifier};
 
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, PartialEq, Default, Deserialize, Serialize)]
 pub struct ArenaSlotId {
     pub day_id: u32,
     pub timeslot_id: u32,
@@ -35,7 +36,7 @@ impl From<ArenaIdentifier> for ArenaSlotId {
 #[derive(Debug, Default, Deserialize, Serialize)]
 pub struct ArenaSlot {
     id: ArenaSlotId,
-    group: Option<GroupId>,
+    group: Mutex<Option<GroupId>>,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -48,7 +49,7 @@ impl From<&ArenaSlot> for ArenaSlotSaveable {
     fn from(arena_slot: &ArenaSlot) -> Self {
         Self {
             id: arena_slot.id.clone(),
-            group: arena_slot.group.clone(),
+            group: arena_slot.group.lock().unwrap().clone(),
         }
     }
 }
@@ -57,38 +58,34 @@ impl ArenaSlot {
     pub fn from_arena_slot_saveable(as_save_able: ArenaSlotSaveable) -> Self {
         Self {
             id: as_save_able.id,
-            group: as_save_able.group,
+            group: Mutex::new(as_save_able.group),
         }
     }
 
-    pub fn new(ts: TimeslotId) -> Self {
-        let mut res = Self::default();
-        res.id.day_id = ts.day_id;
-        res.id.timeslot_id = ts.timeslot_id;
-        res
+    pub fn new(id: ArenaSlotId) -> Self {
+        Self {
+            id,
+            ..Default::default()
+        }
     }
 
-    pub fn set_timeslot_id(&mut self, id: u32) {
-        self.id.timeslot_id = id;
+    pub fn id(&self) -> &ArenaSlotId {
+        &self.id
     }
 
-    pub fn set_day_id(&mut self, id: u32) {
-        self.id.day_id = id;
+    pub fn get_group(&self) -> Option<GroupId> {
+        self.group.lock().unwrap().clone()
     }
 
-    pub fn get_group(&self) -> Option<&GroupId> {
-        self.group.as_ref()
-    }
-
-    pub fn set_group(&mut self, id: Option<GroupId>) {
-        self.group = id;
+    pub fn set_group(&self, id: Option<GroupId>) {
+        *self.group.lock().unwrap() = id;
     }
 }
 
 impl From<&ArenaSlot> for ArenaData {
     fn from(arena: &ArenaSlot) -> Self {
         let id = Some((&arena.id).into());
-        let group = arena.group.as_ref().map(|x| x.into());
+        let group = arena.group.lock().unwrap().clone().map(|x| (&x).into());
 
         Self { id, group }
     }

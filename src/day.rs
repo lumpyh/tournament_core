@@ -1,19 +1,20 @@
 use chrono::{NaiveDate, NaiveDateTime};
 use prost_types::Timestamp;
 use serde::{Deserialize, Serialize};
+use std::sync::Arc;
 
 use crate::arena_slot::{ArenaSlot, ArenaSlotId};
-use crate::container::{HasId, UidContainer};
-use crate::timeslot::{Timeslot, TimeslotSaveable};
+use crate::container::HasId;
+use crate::timeslot::{Timeslot, TimeslotId, TimeslotSaveable};
 use crate::tournament::{DayData, SimpleDay};
 
-#[derive(Default, Debug, Deserialize, Serialize)]
+#[derive(Default, Debug)]
 pub struct Day {
     pub id: u32,
     date: NaiveDate,
     n_ts: u32,
     n_kp: u32,
-    timeslots: UidContainer<Timeslot>,
+    timeslots: Vec<Timeslot>,
 }
 
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
@@ -41,9 +42,9 @@ impl From<&Day> for DaySaveable {
 
 impl Day {
     pub fn from_saveable(day: DaySaveable) -> Self {
-        let mut timeslots: UidContainer<Timeslot> = Default::default();
+        let mut timeslots: Vec<Timeslot> = Default::default();
         for ts in day.timeslots.iter() {
-            timeslots.insert(Timeslot::from_timeslot_saveable(ts.clone()));
+            timeslots.push(Timeslot::from_timeslot_saveable(ts.clone()));
         }
 
         Self {
@@ -55,25 +56,43 @@ impl Day {
         }
     }
 
-    pub fn new(date: NaiveDate, n_ts: u32, n_kp: u32) -> Self {
+    pub fn new(id: u32, date: NaiveDate, n_ts: u32, n_kp: u32) -> Self {
         let mut res = Self {
+            id,
             date,
             n_ts,
             n_kp,
             ..Default::default()
         };
 
-        for _i in 0..n_ts {
-            let ts = Timeslot::new(res.id, n_kp);
+        for i in 0..n_ts {
+            let tid = TimeslotId {
+                day_id: res.id,
+                timeslot_id: i,
+            };
+
+            let ts = Timeslot::new(tid, n_kp);
             res.timeslots.push(ts);
         }
         res
     }
 
-    pub fn get_arena(&mut self, id: &ArenaSlotId) -> Option<&mut ArenaSlot> {
-        let ts = self.timeslots.get_mut(id.timeslot_id)?;
+    pub fn get_arena(&mut self, id: &ArenaSlotId) -> Option<Arc<ArenaSlot>> {
+        let ts = self
+            .timeslots
+            .iter()
+            .find(|x| x.id.timeslot_id == id.timeslot_id)?;
 
         ts.get_arena(id)
+    }
+
+    pub fn from(id: u32, sday: SimpleDay) -> Self {
+        let date = match sday.date {
+            Some(date) => NaiveDateTime::from_timestamp(date.seconds, 0).date(),
+            None => NaiveDateTime::from_timestamp(0, 0).date(),
+        };
+
+        Self::new(id, date, sday.number_time_slots, sday.number_arenas)
     }
 }
 
@@ -92,20 +111,6 @@ impl HasId for Day {
 
     fn set_id(&mut self, id: u32) {
         self.id = id;
-        for ts in self.timeslots.iter_mut() {
-            ts.set_day_id(id);
-        }
-    }
-}
-
-impl From<SimpleDay> for Day {
-    fn from(sday: SimpleDay) -> Self {
-        let date = match sday.date {
-            Some(date) => NaiveDateTime::from_timestamp(date.seconds, 0).date(),
-            None => NaiveDateTime::from_timestamp(0, 0).date(),
-        };
-
-        Self::new(date, sday.number_time_slots, sday.number_arenas)
     }
 }
 

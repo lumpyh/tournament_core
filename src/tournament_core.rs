@@ -101,14 +101,9 @@ impl Tournament {
         Ok(())
     }
 
-    pub fn add_day(&mut self, mut day: Day) {
-        let mut id = 0;
-        let ids: Vec<u32> = self.days.iter().map(|x| x.id).collect();
-        while ids.contains(&id) {
-            id += 1;
-        }
-        day.id = id;
-
+    pub fn add_day(&mut self, day: SimpleDay) {
+        let id = self.days.get_next_id();
+        let day = Day::from(id, day);
         self.days.push(day);
     }
 
@@ -166,15 +161,15 @@ impl Tournament {
         Self::get_group_by_id_internal(&mut self.bewerbs, id)
     }
 
-    fn get_arena_by_id_internal<'a>(
-        days: &'a mut UidContainer<Day>,
+    fn get_arena_by_id_internal(
+        days: &mut UidContainer<Day>,
         id: &ArenaSlotId,
-    ) -> Option<&'a mut ArenaSlot> {
+    ) -> Option<Arc<ArenaSlot>> {
         let day = days.get_mut(id.day_id)?;
         day.get_arena(id)
     }
 
-    pub fn get_arena_by_id(&mut self, id: &ArenaSlotId) -> Option<&mut ArenaSlot> {
+    pub fn get_arena_by_id(&mut self, id: &ArenaSlotId) -> Option<Arc<ArenaSlot>> {
         Self::get_arena_by_id_internal(&mut self.days, id)
     }
 
@@ -207,7 +202,7 @@ impl Tournament {
             return Ok(());
         };
 
-        let group = Self::get_group_by_id_internal(&mut self.bewerbs, curr_group_id);
+        let group = Self::get_group_by_id_internal(&mut self.bewerbs, &curr_group_id);
 
         match group {
             Some(group) => group.set_arena(None),

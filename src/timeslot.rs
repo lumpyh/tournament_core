@@ -2,6 +2,7 @@ use crate::arena_slot::{ArenaSlot, ArenaSlotId, ArenaSlotSaveable};
 use crate::container::{HasId, UidContainer};
 use crate::tournament;
 use serde::{Deserialize, Serialize};
+use std::sync::Arc;
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct TimeslotId {
@@ -9,10 +10,10 @@ pub struct TimeslotId {
     pub timeslot_id: u32,
 }
 
-#[derive(Debug, Default, Deserialize, Serialize)]
+#[derive(Debug, Default)]
 pub struct Timeslot {
-    id: TimeslotId,
-    arenas: UidContainer<ArenaSlot>,
+    pub id: TimeslotId,
+    arenas: Vec<Arc<ArenaSlot>>,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -23,7 +24,7 @@ pub struct TimeslotSaveable {
 
 impl From<&Timeslot> for TimeslotSaveable {
     fn from(ts: &Timeslot) -> Self {
-        let arenas = ts.arenas.iter().map(|x| x.into()).collect();
+        let arenas = ts.arenas.iter().map(|x| x.as_ref().into()).collect();
 
         Self {
             id: ts.id.clone(),
@@ -34,9 +35,11 @@ impl From<&Timeslot> for TimeslotSaveable {
 
 impl Timeslot {
     pub fn from_timeslot_saveable(ts_saveables: TimeslotSaveable) -> Self {
-        let mut arenas: UidContainer<ArenaSlot> = Default::default();
+        let mut arenas: Vec<Arc<ArenaSlot>> = Default::default();
         for ts_saveable in ts_saveables.arenas.iter() {
-            arenas.insert(ArenaSlot::from_arena_slot_saveable(ts_saveable.clone()));
+            arenas.push(Arc::new(ArenaSlot::from_arena_slot_saveable(
+                ts_saveable.clone(),
+            )));
         }
 
         Self {
@@ -45,32 +48,33 @@ impl Timeslot {
         }
     }
 
-    pub fn new(day_id: u32, n_kp: u32) -> Self {
-        let mut res = Self::default();
-        res.id.day_id = day_id;
+    pub fn new(id: TimeslotId, n_kp: u32) -> Self {
+        let mut res = Self {
+            id,
+            ..Default::default()
+        };
 
-        for _i in 0..n_kp {
-            let arena = ArenaSlot::new(res.id.clone());
-            res.arenas.push(arena);
+        for i in 0..n_kp {
+            let id = ArenaSlotId {
+                day_id: res.id.day_id,
+                timeslot_id: res.id.timeslot_id,
+                arena_slot_id: i,
+            };
+
+            let arena = ArenaSlot::new(id);
+            res.arenas.push(Arc::new(arena));
         }
         res
     }
 
-    pub fn set_day_id(&mut self, id: u32) {
-        self.id.day_id = id;
-        for arena in self.arenas.iter_mut() {
-            arena.set_day_id(id);
-        }
-    }
-
-    pub fn get_arena(&mut self, id: &ArenaSlotId) -> Option<&mut ArenaSlot> {
-        self.arenas.get_mut(id.arena_slot_id)
+    pub fn get_arena(&self, id: &ArenaSlotId) -> Option<Arc<ArenaSlot>> {
+        self.arenas.iter().find(|x| x.id() == id).cloned()
     }
 }
 
 impl From<&Timeslot> for tournament::TimeslotData {
     fn from(ts: &Timeslot) -> Self {
-        let arenas = ts.arenas.iter().map(|x| x.into()).collect();
+        let arenas = ts.arenas.iter().map(|x| x.as_ref().into()).collect();
 
         Self { arenas }
     }
@@ -83,8 +87,5 @@ impl HasId for Timeslot {
 
     fn set_id(&mut self, id: u32) {
         self.id.timeslot_id = id;
-        for arena in self.arenas.iter_mut() {
-            arena.set_timeslot_id(id);
-        }
     }
 }
