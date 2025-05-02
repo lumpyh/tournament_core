@@ -1,4 +1,5 @@
 use crate::arena_slot::{ArenaSlot, ArenaSlotId, ArenaSlotSaveable};
+use crate::bewerb::Bewerb;
 use crate::container::{HasId, UidContainer};
 use crate::tournament;
 use serde::{Deserialize, Serialize};
@@ -34,12 +35,16 @@ impl From<&Timeslot> for TimeslotSaveable {
 }
 
 impl Timeslot {
-    pub fn from_timeslot_saveable(ts_saveables: TimeslotSaveable) -> Self {
+    pub fn from_timeslot_saveable(
+        ts_saveables: TimeslotSaveable,
+        bewerbs: &mut UidContainer<Bewerb>,
+    ) -> Self {
         let mut arenas: Vec<Arc<ArenaSlot>> = Default::default();
         for ts_saveable in ts_saveables.arenas.iter() {
-            arenas.push(Arc::new(ArenaSlot::from_arena_slot_saveable(
+            arenas.push(ArenaSlot::from_arena_slot_saveable(
                 ts_saveable.clone(),
-            )));
+                bewerbs,
+            ));
         }
 
         Self {

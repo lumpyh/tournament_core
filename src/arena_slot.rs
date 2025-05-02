@@ -1,8 +1,8 @@
-use crate::container::HasId;
-use crate::group::GroupId;
-use crate::timeslot::TimeslotId;
+use crate::bewerb::Bewerb;
+use crate::container::{HasId, UidContainer};
+use crate::group::{Group, GroupId};
 use serde::{Deserialize, Serialize};
-use std::sync::Mutex;
+use std::sync::{Arc, Mutex};
 
 use crate::tournament::{ArenaData, ArenaIdentifier};
 
@@ -33,10 +33,10 @@ impl From<ArenaIdentifier> for ArenaSlotId {
     }
 }
 
-#[derive(Debug, Default, Deserialize, Serialize)]
+#[derive(Debug, Default)]
 pub struct ArenaSlot {
-    id: ArenaSlotId,
-    group: Mutex<Option<GroupId>>,
+    pub id: ArenaSlotId,
+    group: Mutex<Option<Arc<Group>>>,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -49,17 +49,43 @@ impl From<&ArenaSlot> for ArenaSlotSaveable {
     fn from(arena_slot: &ArenaSlot) -> Self {
         Self {
             id: arena_slot.id.clone(),
-            group: arena_slot.group.lock().unwrap().clone(),
+            group: arena_slot
+                .group
+                .lock()
+                .unwrap()
+                .as_ref()
+                .cloned()
+                .map(|x| x.id().clone()),
         }
     }
 }
 
 impl ArenaSlot {
-    pub fn from_arena_slot_saveable(as_save_able: ArenaSlotSaveable) -> Self {
-        Self {
-            id: as_save_able.id,
-            group: Mutex::new(as_save_able.group),
+    pub fn from_arena_slot_saveable(
+        as_save_able: ArenaSlotSaveable,
+        bewerbs: &mut UidContainer<Bewerb>,
+    ) -> Arc<Self> {
+        let mut group = None;
+        let group_id = as_save_able.group;
+        if let Some(group_id) = group_id {
+            if let Some(bewerb) = bewerbs.get(group_id.bewerb_id) {
+                group = bewerb.get_group_by_id(&group_id);
+            }
+            if group.is_none() {
+                println!("setup of arena_slot group \"{:?}\" not fround", group_id);
+            }
         }
+
+        let res = Arc::new(Self {
+            id: as_save_able.id,
+            group: Mutex::new(None), //TODO
+        });
+
+        if let Some(group) = group {
+            Group::add_to_arenaslot(group, res.clone());
+        }
+
+        res
     }
 
     pub fn new(id: ArenaSlotId) -> Self {
@@ -73,11 +99,11 @@ impl ArenaSlot {
         &self.id
     }
 
-    pub fn get_group(&self) -> Option<GroupId> {
+    pub fn get_group(&self) -> Option<Arc<Group>> {
         self.group.lock().unwrap().clone()
     }
 
-    pub fn set_group(&self, id: Option<GroupId>) {
+    pub fn set_group(&self, id: Option<Arc<Group>>) {
         *self.group.lock().unwrap() = id;
     }
 }
@@ -85,7 +111,12 @@ impl ArenaSlot {
 impl From<&ArenaSlot> for ArenaData {
     fn from(arena: &ArenaSlot) -> Self {
         let id = Some((&arena.id).into());
-        let group = arena.group.lock().unwrap().clone().map(|x| (&x).into());
+        let group = arena
+            .group
+            .lock()
+            .unwrap()
+            .clone()
+            .map(|x| (&x.id()).into());
 
         Self { id, group }
     }

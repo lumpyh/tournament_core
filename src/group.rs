@@ -1,8 +1,8 @@
 use crate::container::HasId;
 use serde::{Deserialize, Serialize};
-use std::sync::Mutex;
+use std::sync::{Arc, Mutex};
 
-use crate::arena_slot::ArenaSlotId;
+use crate::arena_slot::ArenaSlot;
 use crate::tournament::GroupIdentifier;
 
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
@@ -35,17 +35,16 @@ impl From<GroupIdentifier> for GroupId {
     }
 }
 
-#[derive(Debug, Default, Deserialize, Serialize)]
+#[derive(Debug, Default)]
 pub struct Group {
     id: Mutex<GroupId>,
-    arena_slot: Mutex<Option<ArenaSlotId>>,
+    arena_slot: Mutex<Option<Arc<ArenaSlot>>>,
     fencers: Vec<u32>,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct GroupSaveable {
     id: GroupId,
-    arena_slot: Option<ArenaSlotId>,
     fencers: Vec<u32>,
 }
 
@@ -53,7 +52,6 @@ impl From<&Group> for GroupSaveable {
     fn from(group: &Group) -> Self {
         Self {
             id: group.id.lock().unwrap().clone(),
-            arena_slot: group.arena_slot.lock().unwrap().clone(),
             fencers: group.fencers.clone(),
         }
     }
@@ -63,7 +61,7 @@ impl Group {
     pub fn from_saveable(group: &GroupSaveable) -> Self {
         Self {
             id: Mutex::new(group.id.clone()),
-            arena_slot: Mutex::new(group.arena_slot.clone()),
+            arena_slot: Mutex::new(None),
             fencers: group.fencers.clone(),
         }
     }
@@ -82,12 +80,21 @@ impl Group {
         self.id.lock().unwrap().clone()
     }
 
-    pub fn get_arena(&self) -> Option<ArenaSlotId> {
-        self.arena_slot.lock().unwrap().clone()
+    pub fn get_arena(&self) -> Option<Arc<ArenaSlot>> {
+        self.arena_slot.lock().unwrap().as_ref().cloned()
     }
 
-    pub fn set_arena(&self, id: Option<ArenaSlotId>) {
-        *self.arena_slot.lock().unwrap() = id;
+    pub fn set_arena(&self, slot: Option<Arc<ArenaSlot>>) {
+        *self.arena_slot.lock().unwrap() = slot;
+    }
+
+    pub fn add_to_arenaslot(group: Arc<Group>, arena: Arc<ArenaSlot>) {
+        if let Some(old_group) = arena.get_group() {
+            old_group.set_arena(None);
+        }
+
+        arena.set_group(Some(group.clone()));
+        group.set_arena(Some(arena));
     }
 }
 

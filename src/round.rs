@@ -77,9 +77,9 @@ impl Round {
             .collect()
     }
 
-    pub fn get_group_by_id(&mut self, id: &GroupId) -> Option<Arc<Group>> {
+    pub fn get_group_by_id(&self, id: &GroupId) -> Option<Arc<Group>> {
         self.groups
-            .iter_mut()
+            .iter()
             .find(|x| x.id().group_id == id.group_id)
             .cloned()
     }

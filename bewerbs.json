@@ -1,0 +1,120 @@
+[
+  {
+    "id": {
+      "bewerb_name": "LSo",
+      "bewerb_id": 0
+    },
+    "n_rounds": 2,
+    "n_groups": 5,
+    "rounds": [
+      {
+        "id": {
+          "bewerb_name": "LSo",
+          "bewerb_id": 0,
+          "round_id": 0
+        },
+        "groups": [
+          {
+            "id": {
+              "bewerb_name": "LSo",
+              "bewerb_id": 0,
+              "round_id": 0,
+              "group_id": 0
+            },
+            "fencers": []
+          },
+          {
+            "id": {
+              "bewerb_name": "LSo",
+              "bewerb_id": 0,
+              "round_id": 0,
+              "group_id": 1
+            },
+            "fencers": []
+          },
+          {
+            "id": {
+              "bewerb_name": "LSo",
+              "bewerb_id": 0,
+              "round_id": 0,
+              "group_id": 2
+            },
+            "fencers": []
+          },
+          {
+            "id": {
+              "bewerb_name": "LSo",
+              "bewerb_id": 0,
+              "round_id": 0,
+              "group_id": 3
+            },
+            "fencers": []
+          },
+          {
+            "id": {
+              "bewerb_name": "LSo",
+              "bewerb_id": 0,
+              "round_id": 0,
+              "group_id": 4
+            },
+            "fencers": []
+          }
+        ]
+      },
+      {
+        "id": {
+          "bewerb_name": "LSo",
+          "bewerb_id": 0,
+          "round_id": 1
+        },
+        "groups": [
+          {
+            "id": {
+              "bewerb_name": "LSo",
+              "bewerb_id": 0,
+              "round_id": 1,
+              "group_id": 0
+            },
+            "fencers": []
+          },
+          {
+            "id": {
+              "bewerb_name": "LSo",
+              "bewerb_id": 0,
+              "round_id": 1,
+              "group_id": 1
+            },
+            "fencers": []
+          },
+          {
+            "id": {
+              "bewerb_name": "LSo",
+              "bewerb_id": 0,
+              "round_id": 1,
+              "group_id": 2
+            },
+            "fencers": []
+          },
+          {
+            "id": {
+              "bewerb_name": "LSo",
+              "bewerb_id": 0,
+              "round_id": 1,
+              "group_id": 3
+            },
+            "fencers": []
+          },
+          {
+            "id": {
+              "bewerb_name": "LSo",
+              "bewerb_id": 0,
+              "round_id": 1,
+              "group_id": 4
+            },
+            "fencers": []
+          }
+        ]
+      }
+    ]
+  }
+]

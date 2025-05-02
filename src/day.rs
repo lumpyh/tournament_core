@@ -4,7 +4,8 @@ use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 
 use crate::arena_slot::{ArenaSlot, ArenaSlotId};
-use crate::container::HasId;
+use crate::bewerb::Bewerb;
+use crate::container::{HasId, UidContainer};
 use crate::timeslot::{Timeslot, TimeslotId, TimeslotSaveable};
 use crate::tournament::{DayData, SimpleDay};
 
@@ -41,10 +42,10 @@ impl From<&Day> for DaySaveable {
 }
 
 impl Day {
-    pub fn from_saveable(day: DaySaveable) -> Self {
+    pub fn from_saveable(day: DaySaveable, bewerbs: &mut UidContainer<Bewerb>) -> Self {
         let mut timeslots: Vec<Timeslot> = Default::default();
         for ts in day.timeslots.iter() {
-            timeslots.push(Timeslot::from_timeslot_saveable(ts.clone()));
+            timeslots.push(Timeslot::from_timeslot_saveable(ts.clone(), bewerbs));
         }
 
         Self {

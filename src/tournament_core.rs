@@ -39,13 +39,15 @@ impl Tournament {
         Ok(())
     }
 
-    pub fn load_days_from_json_file() -> Result<UidContainer<Day>, Error> {
+    pub fn load_days_from_json_file(
+        bewerbs: &mut UidContainer<Bewerb>,
+    ) -> Result<UidContainer<Day>, Error> {
         let file = File::open("days.json")?;
         let days: Vec<DaySaveable> = serde_json::from_reader(file)?;
 
         let mut res: UidContainer<Day> = Default::default();
         for day in days {
-            res.insert(Day::from_saveable(day.clone()));
+            res.insert(Day::from_saveable(day.clone(), bewerbs));
         }
 
         Ok(res)
@@ -73,9 +75,10 @@ impl Tournament {
     pub fn from_json_file(path: &Path) -> Result<Tournament, Error> {
         let file = File::open(path)?;
         let inner = serde_json::from_reader(file)?;
+        let mut bewerbs = Self::load_bewerbs_from_json_file().unwrap_or_default();
+
         let fencers = Fencers::from_json_file().unwrap_or_default();
-        let days = Self::load_days_from_json_file().unwrap_or_default();
-        let bewerbs = Self::load_bewerbs_from_json_file().unwrap_or_default();
+        let days = Self::load_days_from_json_file(&mut bewerbs).unwrap_or_default();
 
         Ok(Tournament {
             inner,
@@ -178,16 +181,11 @@ impl Tournament {
             return Err(Error::InvalidInput(format!("Ivalid group_id {:?}", id)));
         };
 
-        let Some(curr_arena_id) = group.get_arena() else {
+        let Some(arena) = group.get_arena() else {
             return Ok(());
         };
 
-        let arena = Self::get_arena_by_id_internal(&mut self.days, &curr_arena_id);
-
-        match arena {
-            Some(arena) => arena.set_group(None),
-            None => println!("warning: curr arena {:?} not found", curr_arena_id),
-        }
+        arena.set_group(None);
         group.set_arena(None);
 
         Ok(())
@@ -198,16 +196,11 @@ impl Tournament {
             return Err(Error::InvalidInput(format!("Ivalid arena_id {:?}", id)));
         };
 
-        let Some(curr_group_id) = arena.get_group() else {
+        let Some(group) = arena.get_group() else {
             return Ok(());
         };
 
-        let group = Self::get_group_by_id_internal(&mut self.bewerbs, &curr_group_id);
-
-        match group {
-            Some(group) => group.set_arena(None),
-            None => println!("warning: curr group {:?} not found", curr_group_id),
-        }
+        group.set_arena(None);
         arena.set_group(None);
 
         Ok(())
@@ -229,8 +222,8 @@ impl Tournament {
             return Err(Error::InvalidInput("Ivalid group_id".to_string()));
         };
 
-        arena.set_group(Some(group_id.clone()));
-        group.set_arena(Some(arena_id.clone()));
+        arena.set_group(Some(group.clone()));
+        group.set_arena(Some(arena));
 
         Ok(())
     }

@@ -113,8 +113,8 @@ impl Bewerb {
         res
     }
 
-    pub fn get_group_by_id(&mut self, id: &GroupId) -> Option<Arc<Group>> {
-        let round = self.rounds.get_mut(id.round_id)?;
+    pub fn get_group_by_id(&self, id: &GroupId) -> Option<Arc<Group>> {
+        let round = self.rounds.get(id.round_id)?;
         round.get_group_by_id(id)
     }
 }
