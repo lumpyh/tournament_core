@@ -33,7 +33,7 @@ impl From<&BewerbId> for BewerbIdentifier {
 #[derive(Debug, Default)]
 pub struct Bewerb {
     id: BewerbId,
-    n_rounds: u32,
+    pub n_rounds: u32,
     n_groups: u32,
     rounds: UidContainer<Round>,
 }

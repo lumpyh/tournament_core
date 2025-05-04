@@ -17,34 +17,6 @@ pub struct BewerbGroup {
 }
 
 impl BewerbGroup {
-    pub fn from_saveable(
-        bewerb_group_s: BewerbGroupSaveable,
-        bewerbs: &UidContainer<Bewerb>,
-    ) -> Self {
-        let mut groups = Vec::new();
-        for group_id in bewerb_group_s.groups.iter() {
-            if let Some(group_id) = group_id {
-                let group = bewerbs
-                    .get(group_id.bewerb_id)
-                    .and_then(|x| x.get_group_by_id(group_id));
-                if group.is_none() {
-                    println!(
-                        "Warning: Did not find group for group_id \"{:?}\"",
-                        group_id
-                    );
-                }
-                groups.push(group);
-            } else {
-                groups.push(None);
-            }
-        }
-
-        Self {
-            bewerb_id: bewerb_group_s.bewerb_id,
-            groups,
-        }
-    }
-
     pub fn new(id: &BewerbId) -> Self {
         Self {
             bewerb_id: id.clone(),
@@ -120,18 +92,58 @@ impl From<&Fencer> for SimpleFencer {
 }
 
 impl Fencer {
-    pub fn from_saveable(fs: FencerSaveable, bewerbs: &UidContainer<Bewerb>) -> Fencer {
-        let bewerb_groups = fs
-            .bewerbs
-            .iter()
-            .map(|x| BewerbGroup::from_saveable(x.clone(), bewerbs))
-            .collect();
+    pub fn from_saveable(fs: FencerSaveable, bewerbs: &UidContainer<Bewerb>) -> Arc<Fencer> {
+        let mut bewerb_groups = Vec::new();
+        for bewerb_group in fs.bewerbs.iter() {
+            let Some(bewerb) = bewerbs
+                .iter()
+                .find(|x| x.get_id() == bewerb_group.bewerb_id.bewerb_id)
+            else {
+                println!(
+                    "Warning: could not find bewerb {:?}",
+                    bewerb_group.bewerb_id
+                );
+                continue;
+            };
 
-        Self {
+            let mut groups = Vec::new();
+            for _i in 0..bewerb.n_rounds {
+                groups.push(None);
+            }
+
+            let new_bewerb_group = BewerbGroup {
+                bewerb_id: bewerb_group.bewerb_id.clone(),
+                groups,
+            };
+
+            bewerb_groups.push(new_bewerb_group);
+        }
+
+        let res = Arc::new(Self {
             id: fs.id,
             name: Mutex::new(fs.name),
             bewerbs: Mutex::new(bewerb_groups),
+        });
+
+        let group_ids = fs
+            .bewerbs
+            .iter()
+            .flat_map(|x| x.groups.iter())
+            .filter_map(|x| x.clone());
+        for group_id in group_ids {
+            let Some(group) = bewerbs
+                .iter()
+                .find(|x| x.get_id() == group_id.bewerb_id)
+                .and_then(|x| x.get_group_by_id(&group_id))
+            else {
+                println!("Cant find group \"{:?}\"", group_id);
+                continue;
+            };
+
+            Group::add_fencer_to_group(group, res.clone());
         }
+
+        res
     }
 
     pub fn new(name: String, bewerbs: Vec<BewerbId>) -> Self {
@@ -223,7 +235,7 @@ impl Fencers {
         let mut vec = Vec::new();
         for fencer in fencers {
             let item = Fencer::from_saveable(fencer, bewerbs);
-            vec.push(Arc::new(item));
+            vec.push(item);
         }
 
         Self { fencers: vec }
