@@ -12,8 +12,8 @@ use std::sync::Mutex;
 
 #[derive(Clone, Debug, Default)]
 pub struct BewerbGroup {
-    bewerb_id: BewerbId,
-    groups: Vec<Option<Arc<Group>>>,
+    pub bewerb_id: BewerbId,
+    pub groups: Vec<Option<Arc<Group>>>,
 }
 
 impl BewerbGroup {
@@ -153,6 +153,31 @@ impl Fencer {
 
     pub fn is_same(&self, sf: &SimpleFencer) -> bool {
         self.id == sf.id && *self.name.lock().unwrap() == sf.name
+    }
+
+    pub fn add_group(&self, group: Arc<Group>) {
+        let mut locked = self.bewerbs.lock().unwrap();
+        let Some(bewerb) = locked
+            .iter_mut()
+            .find(|x| x.bewerb_id.bewerb_id == group.id().bewerb_id)
+        else {
+            println!("Error: Fencer not in that Bewerb \"{:?}\"", group.id());
+            return;
+        };
+
+        let Some(slot) = bewerb.groups.get_mut(group.id().round_id as usize) else {
+            println!(
+                "Error: bewerb \"{:?}\" has not enough slots \"{:?}\"",
+                bewerb.bewerb_id,
+                group.id()
+            );
+            return;
+        };
+
+        if let Some(slot) = slot {
+            slot.remove_fencer(self.id);
+        }
+        *slot = Some(group);
     }
 }
 

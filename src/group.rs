@@ -95,6 +95,35 @@ impl Group {
         arena.set_group(Some(group.clone()));
         group.set_arena(Some(arena));
     }
+
+    pub fn add_fencer(&self, fencer: Arc<Fencer>) {
+        self.fencers.lock().unwrap().push(fencer);
+    }
+
+    pub fn remove_fencer(&self, fencer_id: u32) {
+        self.fencers
+            .lock()
+            .unwrap()
+            .retain(|x| x.get_id() == fencer_id);
+    }
+
+    pub fn get_fencer(&self, fencer: &Arc<Fencer>) -> Option<Arc<Fencer>> {
+        self.fencers
+            .lock()
+            .unwrap()
+            .iter()
+            .find(|x| x.get_id() == fencer.get_id())
+            .cloned()
+    }
+
+    pub fn add_fencer_to_group(group: Arc<Group>, fencer: Arc<Fencer>) {
+        if group.get_fencer(&fencer).is_some() {
+            return; //already in group
+        }
+
+        fencer.add_group(group.clone());
+        group.add_fencer(fencer);
+    }
 }
 
 impl HasId for Group {
