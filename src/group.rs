@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use std::sync::{Arc, Mutex};
 
 use crate::arena_slot::ArenaSlot;
+use crate::fencer::Fencer;
 use crate::tournament::GroupIdentifier;
 
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
@@ -39,20 +40,18 @@ impl From<GroupIdentifier> for GroupId {
 pub struct Group {
     id: Mutex<GroupId>,
     arena_slot: Mutex<Option<Arc<ArenaSlot>>>,
-    fencers: Vec<u32>,
+    fencers: Mutex<Vec<Arc<Fencer>>>,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct GroupSaveable {
     id: GroupId,
-    fencers: Vec<u32>,
 }
 
 impl From<&Group> for GroupSaveable {
     fn from(group: &Group) -> Self {
         Self {
             id: group.id.lock().unwrap().clone(),
-            fencers: group.fencers.clone(),
         }
     }
 }
@@ -62,7 +61,7 @@ impl Group {
         Self {
             id: Mutex::new(group.id.clone()),
             arena_slot: Mutex::new(None),
-            fencers: group.fencers.clone(),
+            fencers: Mutex::new(Vec::new()),
         }
     }
 
@@ -72,7 +71,7 @@ impl Group {
         Self {
             id,
             arena_slot: Mutex::new(None),
-            fencers: Vec::new(),
+            fencers: Mutex::new(Vec::new()),
         }
     }
 

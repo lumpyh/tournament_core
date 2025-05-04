@@ -1,7 +1,7 @@
-use crate::bewerb::BewerbId;
-use crate::container::HasId;
+use crate::bewerb::{Bewerb, BewerbId};
+use crate::container::{HasId, UidContainer};
 use crate::error::Error;
-use crate::group::GroupId;
+use crate::group::{Group, GroupId};
 use crate::tournament::SimpleFencer;
 
 use serde::{Deserialize, Serialize};
@@ -10,13 +10,41 @@ use std::slice::{Iter, IterMut};
 use std::sync::Arc;
 use std::sync::Mutex;
 
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default)]
 pub struct BewerbGroup {
     bewerb_id: BewerbId,
-    groups: Vec<GroupId>,
+    groups: Vec<Option<Arc<Group>>>,
 }
 
 impl BewerbGroup {
+    pub fn from_saveable(
+        bewerb_group_s: BewerbGroupSaveable,
+        bewerbs: &UidContainer<Bewerb>,
+    ) -> Self {
+        let mut groups = Vec::new();
+        for group_id in bewerb_group_s.groups.iter() {
+            if let Some(group_id) = group_id {
+                let group = bewerbs
+                    .get(group_id.bewerb_id)
+                    .and_then(|x| x.get_group_by_id(group_id));
+                if group.is_none() {
+                    println!(
+                        "Warning: Did not find group for group_id \"{:?}\"",
+                        group_id
+                    );
+                }
+                groups.push(group);
+            } else {
+                groups.push(None);
+            }
+        }
+
+        Self {
+            bewerb_id: bewerb_group_s.bewerb_id,
+            groups,
+        }
+    }
+
     pub fn new(id: &BewerbId) -> Self {
         Self {
             bewerb_id: id.clone(),
@@ -25,7 +53,27 @@ impl BewerbGroup {
     }
 }
 
-#[derive(Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+pub struct BewerbGroupSaveable {
+    bewerb_id: BewerbId,
+    groups: Vec<Option<GroupId>>,
+}
+
+impl From<&BewerbGroup> for BewerbGroupSaveable {
+    fn from(bewerb: &BewerbGroup) -> Self {
+        let groups = bewerb
+            .groups
+            .iter()
+            .map(|x| x.as_ref().map(|x| x.id()))
+            .collect();
+        Self {
+            bewerb_id: bewerb.bewerb_id.clone(),
+            groups,
+        }
+    }
+}
+
+#[derive(Debug, Default)]
 pub struct Fencer {
     id: u32,
     name: Mutex<String>,
@@ -36,7 +84,7 @@ pub struct Fencer {
 pub struct FencerSaveable {
     id: u32,
     name: String,
-    bewerbs: Vec<BewerbGroup>,
+    bewerbs: Vec<BewerbGroupSaveable>,
 }
 
 impl From<&Fencer> for FencerSaveable {
@@ -44,17 +92,13 @@ impl From<&Fencer> for FencerSaveable {
         Self {
             id: fencer.id,
             name: fencer.name.lock().unwrap().to_owned(),
-            bewerbs: fencer.bewerbs.lock().unwrap().clone(),
-        }
-    }
-}
-
-impl From<FencerSaveable> for Fencer {
-    fn from(fs: FencerSaveable) -> Fencer {
-        Self {
-            id: fs.id,
-            name: Mutex::new(fs.name),
-            bewerbs: Mutex::new(fs.bewerbs),
+            bewerbs: fencer
+                .bewerbs
+                .lock()
+                .unwrap()
+                .iter()
+                .map(|x| x.into())
+                .collect(),
         }
     }
 }
@@ -76,6 +120,20 @@ impl From<&Fencer> for SimpleFencer {
 }
 
 impl Fencer {
+    pub fn from_saveable(fs: FencerSaveable, bewerbs: &UidContainer<Bewerb>) -> Fencer {
+        let bewerb_groups = fs
+            .bewerbs
+            .iter()
+            .map(|x| BewerbGroup::from_saveable(x.clone(), bewerbs))
+            .collect();
+
+        Self {
+            id: fs.id,
+            name: Mutex::new(fs.name),
+            bewerbs: Mutex::new(bewerb_groups),
+        }
+    }
+
     pub fn new(name: String, bewerbs: Vec<BewerbId>) -> Self {
         Self {
             id: 0,
@@ -136,10 +194,10 @@ impl Fencers {
         self.fencers.iter().find(|x| x.get_id() == id).cloned()
     }
 
-    pub fn from(fencers: Vec<FencerSaveable>) -> Self {
+    pub fn from(fencers: Vec<FencerSaveable>, bewerbs: &UidContainer<Bewerb>) -> Self {
         let mut vec = Vec::new();
         for fencer in fencers {
-            let item = fencer.into();
+            let item = Fencer::from_saveable(fencer, bewerbs);
             vec.push(Arc::new(item));
         }
 
@@ -165,10 +223,10 @@ impl Fencers {
         Ok(())
     }
 
-    pub fn from_json_file() -> Result<Self, Error> {
+    pub fn from_json_file(bewerbs: &UidContainer<Bewerb>) -> Result<Self, Error> {
         let file = File::open("fencers.json")?;
         let fencers: Vec<FencerSaveable> = serde_json::from_reader(file)?;
-        let fencers = Self::from(fencers);
+        let fencers = Self::from(fencers, bewerbs);
         Ok(fencers)
     }
 }

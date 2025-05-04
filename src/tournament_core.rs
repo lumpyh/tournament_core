@@ -77,7 +77,7 @@ impl Tournament {
         let inner = serde_json::from_reader(file)?;
         let mut bewerbs = Self::load_bewerbs_from_json_file().unwrap_or_default();
 
-        let fencers = Fencers::from_json_file().unwrap_or_default();
+        let fencers = Fencers::from_json_file(&bewerbs).unwrap_or_default();
         let days = Self::load_days_from_json_file(&mut bewerbs).unwrap_or_default();
 
         Ok(Tournament {
